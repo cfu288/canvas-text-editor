@@ -1,17 +1,29 @@
-function createHiPPICanvas(w, h) {
+function createHiPPICanvas() {
     let ratio = window.devicePixelRatio;
     let cv = document.getElementById("myCanvas");
-    cv.width = w * ratio;
-    cv.height = h * ratio;
-    cv.style.width = w + "px";
-    cv.style.height = h + "px";
+    let div = document.getElementById("canvasContainer");
+
+    cv.width = div.clientWidth;
+    cv.height = div.clientHeight;
+
+    // get current size of the canvas
+    let rect = cv.getBoundingClientRect();
+
+    // increase the actual size of our canvas
+    cv.width = rect.width * ratio;
+    cv.height = rect.height * ratio;
+
+    // ensure all drawing operations are scaled
     cv.getContext("2d").scale(ratio, ratio);
-    console.log(cv)
-    return cv;
+
+    // scale everything down using CSS
+    cv.style.width = rect.width + 'px';
+    cv.style.height = rect.height + 'px';
+
+    return { canvas: cv, context: cv.getContext("2d")};
 }
 
-const canvas = createHiPPICanvas(500, 500) as HTMLCanvasElement;
-const context = canvas.getContext("2d");
+const {canvas, context} = createHiPPICanvas();
 
 const colors = {
   background: "#1D1F21",
