@@ -1,0 +1,17 @@
+{
+  "name": "canvas-text-editor",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "watch": "parcel watch index.html",
+    "build": "parcel build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.3.2"
+  },
+  "dependencies": {
+    "canvas-txt": "^3.0.0"
+  }
+}
