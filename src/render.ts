@@ -11,7 +11,6 @@ function initFontAndGrid(context: CanvasRenderingContext2D) {
   // Initialize font size
   const fontSize = 16;
   const linePadding = 4;
-  // const font = "Fira Code";
   const font = "Courier New";
   context.font = `${fontSize}px ${font}`;
 

@@ -1,8 +1,6 @@
 import { renderScreen } from "./render-screen";
 import { textContent, cursor, canvas, context } from "./render";
 import { TextRow } from "./text-content";
-import { setegid } from "process";
-import { text } from "stream/consumers";
 
 const OPEN_BRACKETS = new Set(["[", "{", "(", '"', "'"]);
 const BRACKETS_PAIR = {
