@@ -2,6 +2,7 @@ import { renderScreen } from "./render-screen";
 import { textContent, cursor, canvas, context } from "./render";
 import { TextRow } from "./text-content";
 import { setegid } from "process";
+import { text } from "stream/consumers";
 
 const OPEN_BRACKETS = new Set(["[", "{", "(", '"', "'"]);
 const BRACKETS_PAIR = {
@@ -17,8 +18,14 @@ export function handleKey(e: KeyboardEvent) {
   if (e.metaKey || e.ctrlKey) {
     switch (e.code) {
       case "KeyX": {
+        textContent.clearBuffer();
         textContent.addRowToBuffer(textContent.rowAt(cursor.Y));
-        textContent.removeRowAt(cursor.Y);
+        if (textContent.length > 1) {
+          textContent.removeRowAt(cursor.Y);
+        } else {
+          textContent.removeRowAt(cursor.Y);
+          textContent.insertNewRowAt(cursor.Y, new TextRow());
+        }
         // Arrow up logic
         const charAbove = textContent.charAt(cursor.X, cursor.Y - 1);
         const rowAbove = textContent.rowAt(cursor.Y - 1);
@@ -29,9 +36,13 @@ export function handleKey(e: KeyboardEvent) {
         }
         break;
       }
+      case "KeyC": {
+        textContent.clearBuffer();
+        textContent.addRowToBuffer(textContent.rowAt(cursor.Y));
+        break;
+      }
       case "KeyV": {
         textContent.insertNewRowsAt(cursor.Y, textContent.buffer);
-        textContent.clearBuffer();
         // end of line
         cursor.setPosition([textContent.rowAt(cursor.Y).length, cursor.Y]);
         break;

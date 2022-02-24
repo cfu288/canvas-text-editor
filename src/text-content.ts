@@ -5,16 +5,20 @@ export class TextContent {
   private _buffer: TextRow<string>[] = [];
   constructor() {}
 
+  get length() {
+    return this.text.length;
+  }
+
   get buffer() {
     return this._buffer;
   }
 
   addRowToBuffer(row: TextRow<string>) {
-    this._buffer.push(row);
+    this._buffer.push(row.clone());
   }
 
   setBuffer(rows: TextRow<string>[]) {
-    this._buffer = rows;
+    this._buffer = rows.map((r) => r.clone());
   }
 
   clearBuffer() {
@@ -45,7 +49,7 @@ export class TextContent {
     this._text.splice(y, 0, row);
   }
 
-  insertNewRowsAt(y: number, rows = []): void {
+  insertNewRowsAt(y: number, rows: TextRow<string>[] = []): void {
     this._text.splice(y, 0, ...rows);
   }
 
@@ -63,6 +67,10 @@ export class TextRow<T> {
 
   constructor(array?: T[]) {
     this._text = array || [];
+  }
+
+  clone() {
+    return new TextRow([...this._text]);
   }
 
   get text(): T[] {

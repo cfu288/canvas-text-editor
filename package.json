@@ -7,7 +7,7 @@
     "watch": "parcel watch index.html",
     "build": "parcel build",
     "tauri": "tauri",
-    "tauri:dev": "tauri dev"
+    "tauri:dev": "cd src-tauri && tauri dev"
   },
   "author": "",
   "license": "ISC",
