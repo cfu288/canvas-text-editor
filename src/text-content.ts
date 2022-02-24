@@ -2,7 +2,24 @@ import { EditorHighlight } from "./render-screen";
 export class TextContent {
   private _text: TextRow<string>[] = [new TextRow()];
   private _text_hl: EditorHighlight[][] = [[]];
+  private _buffer: TextRow<string>[] = [];
   constructor() {}
+
+  get buffer() {
+    return this._buffer;
+  }
+
+  addRowToBuffer(row: TextRow<string>) {
+    this._buffer.push(row);
+  }
+
+  setBuffer(rows: TextRow<string>[]) {
+    this._buffer = rows;
+  }
+
+  clearBuffer() {
+    this._buffer = [];
+  }
 
   get text(): TextRow<string>[] {
     return this._text;
@@ -17,11 +34,19 @@ export class TextContent {
   }
 
   charAt(x: number, y: number) {
-    return this._text?.[y].text?.[x];
+    const row = this._text[y];
+    if (row) {
+      return row.text[x];
+    }
+    return undefined;
   }
 
   insertNewRowAt(y: number, row = new TextRow<string>()): void {
     this._text.splice(y, 0, row);
+  }
+
+  insertNewRowsAt(y: number, rows = []): void {
+    this._text.splice(y, 0, ...rows);
   }
 
   replaceRowAt(y: number, withRow: TextRow<string>): void {
@@ -46,6 +71,10 @@ export class TextRow<T> {
 
   get length(): number {
     return this._text.length;
+  }
+
+  charAtIndex(i: number) {
+    return this._text[i];
   }
 
   entries(): IterableIterator<[number, T]> {
