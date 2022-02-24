@@ -1,5 +1,5 @@
-import { renderScreen } from "./render-screen";
-import { textContent, cursor, canvas, context, charXY } from "./render";
+import { renderScreen } from "../renderers/render-screen";
+import { textContent, cursor, canvas, context, charXY } from "../app";
 export function getCharPositionFromCanvasPosition(
   clientX,
   clientY

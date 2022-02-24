@@ -1,10 +1,36 @@
-import {
-  isDigit,
-  EditorHighlight,
-  isComment,
-  KEYWORDS,
-  isSeparator,
-} from "./render-screen";
+import { EditorHighlight } from "../models/editor-highlight";
+
+export const KEYWORDS = [
+  "function",
+  "for",
+  "finally",
+  "in",
+  "null",
+  "throw",
+  "try",
+  "else",
+  "if",
+  "return",
+  "const",
+  "let",
+  "var",
+];
+
+function isComment(r: string[]) {
+  return r?.[0] === "/" && r?.[1] === "/";
+}
+
+function isDigit(s: string) {
+  return !isNaN(Number(s));
+}
+
+function isSeparator(s: string) {
+  return isWhitespace(s) || s === "\0" || !!s.match("/^[,.()+-/*=~%<>;]/");
+}
+
+function isWhitespace(s: string) {
+  return s.trim().length === 0;
+}
 
 export function updateRowSyntaxHighlighing(row: string[]) {
   const HLArr = Array(row.length).fill(EditorHighlight.HL_NORMAL);

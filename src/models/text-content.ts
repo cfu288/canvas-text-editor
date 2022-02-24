@@ -1,4 +1,4 @@
-import { EditorHighlight } from "./render-screen";
+import { EditorHighlight } from "./editor-highlight";
 export class TextContent {
   private _text: TextRow<string>[] = [new TextRow()];
   private _text_hl: EditorHighlight[][] = [[]];

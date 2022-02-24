@@ -1,6 +1,6 @@
-import { renderScreen } from "./render-screen";
-import { textContent, cursor, canvas, context } from "./render";
-import { TextRow } from "./text-content";
+import { renderScreen } from "../renderers/render-screen";
+import { textContent, cursor, canvas, context } from "../app";
+import { TextRow } from "../models/text-content";
 
 const OPEN_BRACKETS = new Set(["[", "{", "(", '"', "'"]);
 const BRACKETS_PAIR = {

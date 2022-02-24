@@ -1,47 +1,7 @@
-import { colors } from "./colors";
-import { charXY, cursor, textContent } from "./render";
+import { colors } from "../configuration/colors";
+import { charXY, cursor, textContent } from "../app";
 import { updateRowSyntaxHighlighing } from "./update-row-syntax-highlighing";
-
-export enum EditorHighlight {
-  HL_NORMAL,
-  HL_NUMBER,
-  HL_STRING,
-  HL_COMMENT,
-  HL_KEYWORD1,
-  HL_KEYWORD2,
-}
-
-export const KEYWORDS = [
-  "function",
-  "for",
-  "finally",
-  "in",
-  "null",
-  "throw",
-  "try",
-  "else",
-  "if",
-  "return",
-  "const",
-  "let",
-  "var",
-];
-
-export function isComment(r: string[]) {
-  return r?.[0] === "/" && r?.[1] === "/";
-}
-
-export function isDigit(s: string) {
-  return !isNaN(Number(s));
-}
-
-export function isSeparator(s: string) {
-  return isWhitespace(s) || s === "\0" || !!s.match("/^[,.()+-/*=~%<>;]/");
-}
-
-function isWhitespace(s: string) {
-  return s.trim().length === 0;
-}
+import { EditorHighlight } from "../models/editor-highlight";
 
 export function renderText(
   canvas: HTMLCanvasElement,
