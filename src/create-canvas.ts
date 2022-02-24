@@ -5,7 +5,7 @@ export function createCanvas() {
   cv.width = div.clientWidth;
   cv.height = div.clientHeight;
   // get current size of the canvas
-  let rect = cv.getBoundingClientRect();
+  let rect = div.getBoundingClientRect();
   // increase the actual size of our canvas
   cv.width = rect.width * ratio;
   cv.height = rect.height * ratio;

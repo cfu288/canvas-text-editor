@@ -1,9 +1,14 @@
 import { renderScreen } from "./render-screen";
 import { textContent, cursor, canvas, context } from "./render";
+import { TextRow } from "./text-content";
 
 export function handleKey(e: KeyboardEvent) {
+  e.preventDefault();
   let currentRow = textContent.rowAt(cursor.Y);
   switch (e.code) {
+    case "Escape": {
+      break;
+    }
     case "MetaRight": {
       break;
     }
@@ -49,31 +54,42 @@ export function handleKey(e: KeyboardEvent) {
       break;
     }
     case "Enter": {
-      textContent.insertNewRowAt(cursor.Y + 1);
-      cursor.setPosition([0, cursor.Y + 1]);
+      // end of line, just move to new line
+      if (cursor.X === textContent.rowAt(cursor.Y).length) {
+        textContent.insertNewRowAt(cursor.Y + 1);
+        cursor.setPosition([0, cursor.Y + 1]);
+      }
+      // middle of line, split line into two
+      else {
+        const rowToSpit = textContent.rowAt(cursor.Y),
+          firstLine = rowToSpit.text.slice(0, cursor.X),
+          secondLine = rowToSpit.text.slice(cursor.X, rowToSpit.length);
+        textContent.replaceRowAt(cursor.Y, new TextRow<string>(firstLine));
+        textContent.insertNewRowAt(cursor.Y + 1);
+        textContent.replaceRowAt(cursor.Y + 1, new TextRow<string>(secondLine));
+        cursor.setPosition([0, cursor.Y + 1]);
+      }
       break;
     }
     case "Backspace": {
       if (cursor.X > 0) {
         // delete item behind cursor
-        currentRow.splice(cursor.X - 1, 1);
+        currentRow.deleteValueAt(cursor.X - 1);
         cursor.moveLeft();
       } else {
-        // delete entire row
-        if (textContent.rowAt(cursor.Y - 1)) {
-          // handle if there is still text on the line behind the cursor
-          const orgLen = textContent.text[cursor.Y - 1].length;
-          textContent.text[cursor.Y - 1] = textContent.text[
-            cursor.Y - 1
-          ].concat(textContent.text[cursor.Y]);
+        // if prev line exist,
+        if (textContent.text[cursor.Y - 1]) {
+          // handle merge of prev line and current line
+          const orgLen = textContent.rowAt(cursor.Y - 1).length;
+          const newRow = textContent
+            .rowAt(cursor.Y - 1)
+            .concat(textContent.text[cursor.Y]);
+          textContent.replaceRowAt(cursor.Y - 1, newRow);
           textContent.removeRowAt(cursor.Y);
           cursor.setPosition([orgLen, cursor.Y - 1]);
-        } else {
-          // there is no text behind cursor
-          textContent.removeRowAt(cursor.Y);
-          cursor.moveLeft();
-          cursor.setPosition([textContent[cursor.Y - 1].length, cursor.Y - 1]);
         }
+        // there is no prev line, we are already at the first row
+        // leave cursor where it is
       }
       break;
     }
@@ -86,7 +102,7 @@ export function handleKey(e: KeyboardEvent) {
       break;
     }
     default:
-      currentRow.splice(cursor.X, 0, e.key);
+      currentRow.insertValueAt(cursor.X, e.key);
       cursor.moveRight();
       break;
   }

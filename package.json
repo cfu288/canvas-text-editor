@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "start": "parcel index.html",
     "watch": "parcel watch index.html",
-    "build": "parcel build"
+    "build": "parcel build",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@tauri-apps/cli": "^1.0.0-rc.5",
     "parcel": "^2.3.2"
   },
-  "dependencies": {
-    "canvas-txt": "^3.0.0"
-  }
+  "dependencies": {}
 }
