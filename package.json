@@ -6,7 +6,7 @@
   "scripts": {
     "start": "parcel index.html",
     "watch": "parcel watch index.html",
-    "build": "parcel build index.html",
+    "build": "parcel build index.html --public-url 'https://cfu288.github.io/canvas-text-editor/'",
     "prepare": "husky install",
     "test": "jest"
   },
