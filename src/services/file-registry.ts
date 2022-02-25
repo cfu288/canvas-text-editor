@@ -4,7 +4,6 @@ export namespace FileRegistry {
   // export function getFile(name: string): Promise<string> {
   //   return fs.readTextFile("hw.txt", {dir: BaseDirectory.Download});
   // }
-
   // /**
   //  *
   //  * @returns path(s) to selected files

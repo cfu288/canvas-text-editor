@@ -1,10 +1,6 @@
 import { EditorHighlight } from "../models/editor-highlight";
 
-export const KEYWORDS1 = new Set([
-  "export",
-  "import",
-  "new",
-]);
+export const KEYWORDS1 = new Set(["export", "import", "new"]);
 
 export const KEYWORDS1SET = new Set(KEYWORDS1);
 
@@ -48,8 +44,6 @@ export const KEYWORDS = [
   "try",
   "var",
 ].concat(KEYWORDS1);
-
-
 
 function isComment(r: string[]) {
   return r?.[0] === "/" && r?.[1] === "/";
@@ -112,9 +106,8 @@ export function updateRowSyntaxHighlighing(row: string[]) {
       i = row.length;
     }
 
-    const old_prev_sep = prev_sep
+    const old_prev_sep = prev_sep;
     prev_sep = isSeparator(ch);
-
 
     // keywords
     if (old_prev_sep) {
@@ -126,19 +119,18 @@ export function updateRowSyntaxHighlighing(row: string[]) {
         // get the next klen chars of the current row to see if it is a keyword
         const cw = row.slice(i, i + klen).join("");
         if (cw === kw && row[i + klen] && isSeparator(row[i + klen])) {
-          const secondary = KEYWORDS1SET.has(cw)
+          const secondary = KEYWORDS1SET.has(cw);
           // It is a keyword, mark it in the HL array
           for (let j = 0; j < klen; j++) {
-            if(secondary){
+            if (secondary) {
               HLArr.splice(i + j, 1, EditorHighlight.HL_KEYWORD2);
-            }else{
-              HLArr.splice(i + j, 1, EditorHighlight.HL_KEYWORD1 );
-
+            } else {
+              HLArr.splice(i + j, 1, EditorHighlight.HL_KEYWORD1);
             }
           }
           // move index past the current key word to skip reprocessing
           i += klen;
-          prev_sep = true
+          prev_sep = true;
           break;
         }
       }
