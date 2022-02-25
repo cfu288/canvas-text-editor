@@ -15,6 +15,26 @@ export function handleKey(e: KeyboardEvent) {
   e.preventDefault();
   if (e.metaKey || e.ctrlKey) {
     switch (e.code) {
+      case "KeyO": {
+        const fileHandleTask = window.showOpenFilePicker({multiple: false})
+        fileHandleTask.then( 
+          fileHandlerList => 
+            fileHandlerList[0]
+              .getFile()
+              .then(
+                file => 
+                  file
+                    .text()
+                    .then(
+                      data => {
+                        textContent.readFromFile(data);
+                        window.requestAnimationFrame(() => renderScreen(canvas, context));
+                      }
+                    )
+              )
+        )
+        break;
+      }
       case "KeyX": {
         textContent.clearBuffer();
         textContent.addRowToBuffer(textContent.rowAt(cursor.Y));

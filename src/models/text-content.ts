@@ -5,6 +5,16 @@ export class TextContent {
   private _buffer: TextRow<string>[] = [];
   constructor() {}
 
+  readFromFile(s : string){
+    const rows = s.split("\n")
+    console.log(rows)
+    const rowOfRows = []
+    for (const rowIn of rows){
+      rowOfRows.push(new TextRow(rowIn.split("")))
+    }
+    this._text = rowOfRows
+  }
+
   get length() {
     return this.text.length;
   }

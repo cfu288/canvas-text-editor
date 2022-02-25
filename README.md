@@ -1,6 +1,6 @@
 # Canvas Text Editor
 
-A proof of concept text editor implemented using HTML canvas and Tauri.
+A proof of concept text editor implemented using HTML canvas.
 
 ![screenshot](./example.png)
 
@@ -12,3 +12,4 @@ Currently implemented:
 - Keyboard navigation
 - Simple line buffer copy/cut/paste
 - Simple syntax highlighting
+- Open and read file with cmd+o
