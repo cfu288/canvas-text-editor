@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: "16"
 
-      - name: Cache dependencies
+      - name: Cache Dependencies
         uses: actions/cache@v2
         with:
           path: ~/.npm
@@ -26,16 +26,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: npm ci
+      - name: Install Packages
         run: npm ci
 
-      - name: npm test
+      - name: Run Tests
         run: npm test
 
-      - name: npm build
-        run: npm build
+      - name: Build Application
+        run: npm run build
 
-      - name: Deploy
+      - name: Deploy to GH Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
