@@ -2,6 +2,7 @@
   "name": "canvas-text-editor",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://cfu288.github.io/canvas-text-editor",
   "scripts": {
     "start": "parcel index.html",
     "watch": "parcel watch index.html",

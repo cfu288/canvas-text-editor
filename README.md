@@ -1,10 +1,10 @@
 # Canvas Text Editor
 
-A proof of concept text editor implemented using HTML canvas.
+A proof of concept text editor implemented using HTML canvas. Extremely rough, don't use for anything serious.
+
+[Demo](https://cfu288.github.io/canvas-text-editor/)
 
 ![screenshot](./example.png)
-
-Extremely rough, don't use for anything.
 
 Currently implemented:
 
