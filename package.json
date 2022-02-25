@@ -6,17 +6,29 @@
     "start": "parcel index.html",
     "watch": "parcel watch index.html",
     "build": "parcel build index.html",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/jest": "^27.4.1",
+    "babel-jest": "^27.5.1",
     "husky": "^7.0.4",
+    "jest": "^27.5.1",
     "lint-staged": "^12.3.4",
     "parcel": "^2.3.2",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "regenerator-runtime": "^0.13.9",
+    "ts-node": "^10.5.0"
   },
   "lint-staged": {
     "*.{js,css,md}": "prettier --write"
+  },
+  "dependencies": {
+    "@types/wicg-file-system-access": "^2020.9.5"
   }
 }

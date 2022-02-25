@@ -43,7 +43,7 @@ export const KEYWORDS = [
   "throw",
   "try",
   "var",
-].concat(KEYWORDS1);
+].concat([...KEYWORDS1]);
 
 function isComment(r: string[]) {
   return r?.[0] === "/" && r?.[1] === "/";
@@ -62,7 +62,7 @@ function isWhitespace(s: string) {
 }
 
 // Row based syntax highlighting
-export function updateRowSyntaxHighlighing(row: string[]) {
+export function updateRowSyntaxHighlighting(row: string[]) {
   const HLArr = Array(row.length).fill(EditorHighlight.HL_NORMAL);
 
   // store if prev char was a separator char

@@ -1,6 +1,6 @@
 import { colors } from "../configuration/colors";
 import { charXY, cursor, textContent } from "../app";
-import { updateRowSyntaxHighlighing } from "./update-row-syntax-highlighing";
+import { updateRowSyntaxHighlighting } from "./update-row-syntax-highlighing";
 import { EditorHighlight } from "../models/editor-highlight";
 
 export function renderText(
@@ -14,7 +14,7 @@ export function renderText(
 
   for (const [indexY, row] of textContent.text.entries()) {
     // move this to update text row
-    textContent.textHL[indexY] = updateRowSyntaxHighlighing(row.text);
+    textContent.textHL[indexY] = updateRowSyntaxHighlighting(row.text);
 
     context.fillStyle = colors.text;
     for (const [indexX, char] of row.entries()) {

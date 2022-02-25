@@ -1,8 +1,8 @@
 export enum EditorHighlight {
-  HL_NORMAL,
-  HL_NUMBER,
-  HL_STRING,
-  HL_COMMENT,
-  HL_KEYWORD1,
-  HL_KEYWORD2,
+  HL_NORMAL = 0,
+  HL_NUMBER = 1,
+  HL_STRING = 2,
+  HL_COMMENT = 3,
+  HL_KEYWORD1 = 4,
+  HL_KEYWORD2 = 5,
 }
