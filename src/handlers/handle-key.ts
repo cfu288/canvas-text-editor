@@ -35,9 +35,17 @@ export function handleKey(e: KeyboardEvent) {
       case "KeyO": {
         FileRegistry.promptFileSelect().then((file) =>
           FileRegistry.getFileContents(file).then((data) => {
-            textContent.readFromFile(data);
+            textContent.readFromFile(file.name, data);
             window.requestAnimationFrame(() => renderScreen(canvas, context));
           })
+        );
+        break;
+      }
+      case "KeyS": {
+        FileRegistry.saveFileContents(textContent.name, textContent).then(
+          () => {
+            alert(`${textContent.name} saved`);
+          }
         );
         break;
       }

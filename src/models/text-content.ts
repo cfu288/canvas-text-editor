@@ -3,16 +3,33 @@ export class TextContent {
   private _text: TextRow<string>[] = [new TextRow()];
   private _text_hl: EditorHighlight[][] = [[]];
   private _buffer: TextRow<string>[] = [];
+  private _fileName: string = "untitled.txt";
   constructor() {}
 
-  readFromFile(s: string) {
+  readFromFile(name: string, s: string) {
+    this._fileName = name || "untitled.txt";
     const rows = s.split("\n");
-    console.log(rows);
     const rowOfRows = [];
     for (const rowIn of rows) {
       rowOfRows.push(new TextRow(rowIn.split("")));
     }
     this._text = rowOfRows;
+  }
+
+  get name() {
+    return this._fileName;
+  }
+
+  toArrayBuffer() {
+    const flattenedArr: string = this._text
+      .reduce((prev, curr) => prev.concat([...curr.text, "\n"]), [])
+      .join("");
+    var buf = new ArrayBuffer(flattenedArr.length * 2); // 2 bytes for each char
+    var bufView = new Uint8Array(buf);
+    for (let i = 0, strLen = flattenedArr.length; i < strLen; i++) {
+      bufView[i] = flattenedArr.charCodeAt(i);
+    }
+    return buf;
   }
 
   get length() {
