@@ -2,15 +2,24 @@ import { colors } from "../configuration/colors";
 import { charXY, cursor, textContent } from "../app";
 import { updateRowSyntaxHighlighting } from "./update-row-syntax-highlighing";
 import { EditorHighlight } from "../models/editor-highlight";
+import { scroller } from "../app";
 
 export function renderText(
   canvas: HTMLCanvasElement,
-  context: CanvasRenderingContext2D
+  context: CanvasRenderingContext2D,
 ) {
+  // Store the current transformation matrix
+  context.save();
+
+  // Use the identity matrix while clearing the canvas
+  context.setTransform(1, 0, 0, 1, 0, 0);
   context.clearRect(0, 0, canvas.width, canvas.height);
 
+  // Restore the transform
+  context.restore();
+
   context.fillStyle = colors.background;
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.fillRect(0, Math.abs(scroller.Y), canvas.width, canvas.height);
 
   for (const [indexY, row] of textContent.text.entries()) {
     // move this to update text row

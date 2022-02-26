@@ -1,12 +1,12 @@
 import { renderScreen } from "../renderers/render-screen";
-import { textContent, cursor, canvas, context, charXY } from "../app";
+import { textContent, cursor, canvas, context, charXY, scroller } from "../app";
 export function getCharPositionFromCanvasPosition(
   clientX,
   clientY
 ): [x: number, y: number] {
   const rect = canvas.getBoundingClientRect();
-  const x = Math.round((clientX - rect.left) / charXY[0]);
-  const y = Math.round((clientY - rect.top) / charXY[1]) - 1;
+  const x = Math.round((scroller.X + clientX - rect.left) / charXY[0]);
+  const y = Math.round((Math.abs(scroller.Y) + clientY - rect.top) / charXY[1]) - 1;
   return [x, y];
 }
 

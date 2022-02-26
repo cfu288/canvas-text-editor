@@ -1,5 +1,5 @@
 import { renderScreen } from "../renderers/render-screen";
-import { textContent, cursor, canvas, context } from "../app";
+import { textContent, cursor, canvas, context, scroller } from "../app";
 import { TextRow } from "../models/text-content";
 import { FileRegistry } from "../services/file-registry";
 
@@ -12,6 +12,7 @@ const BRACKETS_PAIR = {
   "'": "'",
 };
 
+
 export function handleKey(e: KeyboardEvent) {
   e.preventDefault();
   if (e.metaKey || e.ctrlKey) {
@@ -23,6 +24,16 @@ export function handleKey(e: KeyboardEvent) {
             window.requestAnimationFrame(() => renderScreen(canvas, context));
           })
         );
+        break;
+      }
+      case "KeyF": {
+        scroller.scrollDown()
+        window.requestAnimationFrame(() => renderScreen(canvas, context));
+        break;
+      }
+      case "KeyB": {
+        scroller.scrollUp()
+        window.requestAnimationFrame(() => renderScreen(canvas, context));
         break;
       }
       case "KeyX": {
