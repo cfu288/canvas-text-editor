@@ -12,9 +12,24 @@ const BRACKETS_PAIR = {
   "'": "'",
 };
 
-
 export function handleKey(e: KeyboardEvent) {
   e.preventDefault();
+  if (e.metaKey && e.shiftKey && ["ArrowUp", "ArrowDown"].includes(e.code)) {
+    switch (e.code) {
+      case "ArrowDown": {
+        scroller.scrollDown();
+        window.requestAnimationFrame(() => renderScreen(canvas, context));
+        break;
+      }
+      case "ArrowUp": {
+        scroller.scrollUp();
+        window.requestAnimationFrame(() => renderScreen(canvas, context));
+        break;
+      }
+      default:
+        break;
+    }
+  }
   if (e.metaKey || e.ctrlKey) {
     switch (e.code) {
       case "KeyO": {
@@ -24,16 +39,6 @@ export function handleKey(e: KeyboardEvent) {
             window.requestAnimationFrame(() => renderScreen(canvas, context));
           })
         );
-        break;
-      }
-      case "KeyF": {
-        scroller.scrollDown()
-        window.requestAnimationFrame(() => renderScreen(canvas, context));
-        break;
-      }
-      case "KeyB": {
-        scroller.scrollUp()
-        window.requestAnimationFrame(() => renderScreen(canvas, context));
         break;
       }
       case "KeyX": {

@@ -13,3 +13,4 @@ Currently implemented:
 - Simple line buffer copy/cut/paste
 - Simple syntax highlighting
 - Open and read file with cmd+o
+- Scroll up and down (cmd/ctrl + shift arrow up/down)
