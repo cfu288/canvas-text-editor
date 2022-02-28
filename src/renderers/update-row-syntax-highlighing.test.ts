@@ -1,4 +1,5 @@
 import { EditorHighlight } from "../models/editor-highlight";
+import { TextRow } from "../models/text-row";
 import { updateRowSyntaxHighlighting } from "./update-row-syntax-highlighing";
 
 test.each([
@@ -22,7 +23,7 @@ test.each([
     ],
   ],
 ])("primary keywords are syntax highlighted correctly", async (arr1, arr2) => {
-  const value = updateRowSyntaxHighlighting(arr1);
+  const value = updateRowSyntaxHighlighting(new TextRow(arr1));
   expect(value).toEqual(arr2);
 });
 
@@ -54,7 +55,7 @@ test.each([
 ])(
   "secondary keywords are syntax highlighted correctly",
   async (arr1, arr2) => {
-    const value = updateRowSyntaxHighlighting(arr1);
+    const value = updateRowSyntaxHighlighting(new TextRow(arr1));
     expect(value).toEqual(arr2);
   }
 );
@@ -76,7 +77,7 @@ test.each([
     ],
   ],
 ])("numbers are syntax highlighted correctly", async (arr1, arr2) => {
-  const value = updateRowSyntaxHighlighting(arr1);
+  const value = updateRowSyntaxHighlighting(new TextRow(arr1));
   expect(value).toEqual(arr2);
 });
 
@@ -93,7 +94,7 @@ test.each([
 ])(
   "numbers within words are not syntax highlighted as numbers",
   async (arr1, arr2) => {
-    const value = updateRowSyntaxHighlighting(arr1);
+    const value = updateRowSyntaxHighlighting(new TextRow(arr1));
     expect(value).toEqual(arr2);
   }
 );
@@ -124,7 +125,7 @@ test.each([
     ],
   ],
 ])("quoted strings are highlighted as strings", async (arr1, arr2) => {
-  const value = updateRowSyntaxHighlighting(arr1);
+  const value = updateRowSyntaxHighlighting(new TextRow(arr1));
   expect(value).toEqual(arr2);
 });
 
@@ -186,7 +187,7 @@ test.each([
 ])(
   "keywords, strings, numbers on the same line are all highlighted appropriately",
   async (arr1, arr2) => {
-    const value = updateRowSyntaxHighlighting(arr1);
+    const value = updateRowSyntaxHighlighting(new TextRow(arr1));
     expect(value).toEqual(arr2);
   }
 );

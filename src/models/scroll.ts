@@ -1,9 +1,9 @@
 export class Scroll {
   private cursorX: number = 0;
   private cursorY: number = 0;
-  private _context = undefined
+  private _context = undefined;
   constructor(context) {
-    this._context = context
+    this._context = context;
   }
 
   get X(): number {
@@ -15,14 +15,12 @@ export class Scroll {
   }
 
   scrollUp(by: number = 200) {
-    if(this.cursorY >= 0){
-      this.cursorY == 0
-    }
-    else if (this.cursorY + by > 0) {
+    if (this.cursorY >= 0) {
+      this.cursorY == 0;
+    } else if (this.cursorY + by > 0) {
       this._context.translate(0, Math.abs(this.cursorY));
       this.cursorY += Math.abs(this.cursorY);
-    } 
-    else {
+    } else {
       this.cursorY += by;
       this._context.translate(0, by);
     }

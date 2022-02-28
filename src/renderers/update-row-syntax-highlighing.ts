@@ -1,4 +1,5 @@
 import { EditorHighlight } from "../models/editor-highlight";
+import { TextRow } from "../models/text-row";
 
 export const KEYWORDS1 = new Set(["export", "import", "new"]);
 
@@ -45,8 +46,8 @@ export const KEYWORDS = [
   "var",
 ].concat([...KEYWORDS1]);
 
-function isComment(r: string[]) {
-  return r?.[0] === "/" && r?.[1] === "/";
+function isComment(r: TextRow<string>) {
+  return r.get(0) === "/" && r.get(1) === "/";
 }
 
 function isDigit(s: string) {
@@ -58,11 +59,11 @@ function isSeparator(s: string) {
 }
 
 function isWhitespace(s: string) {
-  return s.trim().length === 0;
+  return s?.trim().length === 0 || s === undefined;
 }
 
 // Row based syntax highlighting
-export function updateRowSyntaxHighlighting(row: string[]) {
+export function updateRowSyntaxHighlighting(row: TextRow<string>) {
   const HLArr = Array(row.length).fill(EditorHighlight.HL_NORMAL);
 
   // store if prev char was a separator char
@@ -72,7 +73,11 @@ export function updateRowSyntaxHighlighting(row: string[]) {
 
   let i = 0;
   while (i < row.length) {
-    const ch = row[i];
+    const ch = row.get(i);
+
+    if (ch === "z") {
+      debugger;
+    }
 
     // handle string highlighting
     if (in_string !== undefined) {
@@ -117,8 +122,8 @@ export function updateRowSyntaxHighlighting(row: string[]) {
         // using length klen of keyword
         const klen = kw.length;
         // get the next klen chars of the current row to see if it is a keyword
-        const cw = row.slice(i, i + klen).join("");
-        if (cw === kw && row[i + klen] && isSeparator(row[i + klen])) {
+        const cw = row.text.slice(i, i + klen).join("");
+        if (cw === kw && row.get(i + klen) && isSeparator(row[i + klen])) {
           const secondary = KEYWORDS1SET.has(cw);
           // It is a keyword, mark it in the HL array
           for (let j = 0; j < klen; j++) {

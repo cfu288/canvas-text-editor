@@ -6,7 +6,7 @@ import { scroller } from "../app";
 
 export function renderText(
   canvas: HTMLCanvasElement,
-  context: CanvasRenderingContext2D,
+  context: CanvasRenderingContext2D
 ) {
   // Store the current transformation matrix
   context.save();
@@ -23,7 +23,7 @@ export function renderText(
 
   for (const [indexY, row] of textContent.text.entries()) {
     // move this to update text row
-    textContent.textHL[indexY] = updateRowSyntaxHighlighting(row.text);
+    textContent.textHL[indexY] = updateRowSyntaxHighlighting(row);
 
     context.fillStyle = colors.text;
     for (const [indexX, char] of row.entries()) {

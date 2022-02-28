@@ -6,7 +6,8 @@ export function getCharPositionFromCanvasPosition(
 ): [x: number, y: number] {
   const rect = canvas.getBoundingClientRect();
   const x = Math.round((scroller.X + clientX - rect.left) / charXY[0]);
-  const y = Math.round((Math.abs(scroller.Y) + clientY - rect.top) / charXY[1]) - 1;
+  const y =
+    Math.round((Math.abs(scroller.Y) + clientY - rect.top) / charXY[1]) - 1;
   return [x, y];
 }
 
