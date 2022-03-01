@@ -315,3 +315,31 @@ test("multiple pop removes from end", () => {
   gb.pop();
   expect([...gb]).toEqual([1, 2, 3]);
 });
+
+test("slice returns correct slice", () => {
+  const gb = new GapBuffer<number | string>([1, 2, 3, 4, 5], 3);
+  expect(gb.slice(0, 2)).toEqual([1, 2]);
+});
+
+test("slice returns correct slice after pushes to front", () => {
+  const gb = new GapBuffer<number | string>([1, 2, 3, 4, 5], 3);
+  expect(gb.slice(0, 2)).toEqual([1, 2]);
+});
+
+test("slice returns correct slice after pushes to middle", () => {
+  const gb = new GapBuffer<number | string>([1, 2, 4, 5], 3);
+  gb.insert(2, 0);
+  expect(gb.slice(0, 4)).toEqual([1, 2, 0, 4]);
+});
+
+test("slice returns correct slice after pushes to front", () => {
+  const gb = new GapBuffer<number | string>([1, 2, 3, 4, 5], 3);
+  gb.insert(0, 0);
+  expect(gb.slice(0, 3)).toEqual([0, 1, 2]);
+});
+
+test("slice returns correct slice after pushes to end", () => {
+  const gb = new GapBuffer<number | string>([1, 2, 3, 4, 5], 3);
+  gb.push(6);
+  expect(gb.slice(0, 6)).toEqual([1, 2, 3, 4, 5, 6]);
+});

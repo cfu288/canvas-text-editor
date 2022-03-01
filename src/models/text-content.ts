@@ -1,19 +1,21 @@
 import { EditorHighlight } from "./editor-highlight";
 import { TextRow } from "./text-row";
 import { updateRowSyntaxHighlighting } from "../renderers/update-row-syntax-highlighing";
+import { FontContext } from "./font-context";
 
 export class TextContent {
   private _text: TextRow<string>[] = [new TextRow()];
   private _text_hl: EditorHighlight[][] = [[]];
   private _buffer: TextRow<string>[] = [];
   private _fileName: string = "untitled.txt";
-  private _charXY: [number, number];
-  constructor(charXY: [number, number]) {
-    this._charXY = charXY;
+  private _fontContext: FontContext;
+
+  constructor(fontContext: FontContext) {
+    this._fontContext = fontContext;
   }
 
   get contentHeight() {
-    return this._text.length * this._charXY[1];
+    return this._text.length * this._fontContext.height;
   }
 
   readFromFile(name: string, s: string) {
@@ -35,19 +37,21 @@ export class TextContent {
   }
 
   toArrayBuffer() {
-    const flattenedArr: string = this._text
-      .reduce((prev, curr) => prev.concat([...curr.text, "\n"]), [])
-      .join("");
-    var buf = new ArrayBuffer(flattenedArr.length); // 2 bytes for each char
-    var bufView = new Uint8Array(buf);
+    const flattenedArr: string[] = [];
+    for (const row of this._text) {
+      flattenedArr.push([...row, "\n"].join(""));
+    }
+    const flattenedString = flattenedArr.join("");
+    let buf = new ArrayBuffer(flattenedArr.length); // 2 bytes for each char
+    let bufView = new Uint8Array(buf);
     for (let i = 0, strLen = flattenedArr.length; i < strLen; i++) {
-      bufView[i] = flattenedArr.charCodeAt(i);
+      bufView[i] = flattenedString.charCodeAt(i);
     }
     return buf;
   }
 
   get length() {
-    return this.text.length;
+    return this._text.length;
   }
 
   get buffer() {
@@ -64,10 +68,6 @@ export class TextContent {
 
   clearBuffer() {
     this._buffer = [];
-  }
-
-  get text(): TextRow<string>[] {
-    return this._text;
   }
 
   get textHL() {
@@ -87,6 +87,7 @@ export class TextContent {
   }
 
   insertNewRowAt(y: number, row = new TextRow<string>()): void {
+    this._text_hl.splice(y, 0, updateRowSyntaxHighlighting(row));
     this._text.splice(y, 0, row);
   }
 
@@ -95,10 +96,17 @@ export class TextContent {
   }
 
   replaceRowAt(y: number, withRow: TextRow<string>): void {
+    this._text_hl[y] = updateRowSyntaxHighlighting(withRow);
     this._text[y] = withRow;
   }
 
   removeRowAt(y: number): void {
     this._text.splice(y, 1);
+  }
+
+  *entries(): Generator<[number, TextRow<string>], void, unknown> {
+    for (const [i, item] of this._text.entries()) {
+      yield [i, item];
+    }
   }
 }

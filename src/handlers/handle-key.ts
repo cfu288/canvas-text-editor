@@ -135,8 +135,8 @@ export function handleKey(e: KeyboardEvent) {
         // middle of line, split line into two
         else {
           const rowToSpit = textContent.rowAt(cursor.Y),
-            firstLine = rowToSpit.text.slice(0, cursor.X),
-            secondLine = rowToSpit.text.slice(cursor.X, rowToSpit.length);
+            firstLine = rowToSpit.slice(0, cursor.X),
+            secondLine = rowToSpit.slice(cursor.X, rowToSpit.length);
           textContent.replaceRowAt(cursor.Y, new TextRow<string>(firstLine));
           textContent.insertNewRowAt(cursor.Y + 1);
           textContent.replaceRowAt(
@@ -154,12 +154,12 @@ export function handleKey(e: KeyboardEvent) {
           cursor.moveLeft();
         } else {
           // if prev line exist,
-          if (textContent.text[cursor.Y - 1]) {
+          if (textContent.rowAt(cursor.Y - 1)) {
             // handle merge of prev line and current line
             const orgLen = textContent.rowAt(cursor.Y - 1).length;
             const newRow = textContent
               .rowAt(cursor.Y - 1)
-              .concat(textContent.text[cursor.Y]);
+              .concat(textContent.rowAt(cursor.Y));
             textContent.replaceRowAt(cursor.Y - 1, newRow);
             textContent.removeRowAt(cursor.Y);
             cursor.setPosition([orgLen, cursor.Y - 1]);

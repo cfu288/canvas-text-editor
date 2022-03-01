@@ -1,65 +1,74 @@
 import { colors } from "../configuration/colors";
-import { charXY, cursor, textContent, scroller } from "../app";
 import { EditorHighlight } from "../models/editor-highlight";
+import { Cursor } from "../models/cursor";
+import { TextContent } from "../models/text-content";
+import { Scroll } from "../models/scroll";
+import { FontContext } from "../models/font-context";
 
-export function renderText(
+function renderText(
   canvas: HTMLCanvasElement,
-  context: CanvasRenderingContext2D
+  context: CanvasRenderingContext2D,
+  charXY: FontContext,
+  textContent: TextContent,
+  scroller: Scroll
 ) {
   // Store the current transformation matrix
   context.save();
-
   // Use the identity matrix while clearing the canvas
   context.setTransform(1, 0, 0, 1, 0, 0);
   context.clearRect(0, 0, canvas.width, canvas.height);
-
   // Restore the transform
   context.restore();
 
   context.fillStyle = colors.background;
   context.fillRect(0, Math.abs(scroller.Y), canvas.width, canvas.height);
 
-  for (const [indexY, row] of textContent.text.entries()) {
-    // move this to update text row
-
+  for (const [indexY, row] of textContent.entries()) {
     context.fillStyle = colors.text;
     for (const [indexX, char] of row.entries()) {
       context.save();
-      if (textContent.textHL[indexY][indexX] === EditorHighlight.HL_NUMBER) {
-        context.fillStyle = colors.number;
-      } else if (
-        textContent.textHL[indexY][indexX] === EditorHighlight.HL_STRING
-      ) {
-        context.fillStyle = colors.string;
-      } else if (
-        textContent.textHL[indexY][indexX] === EditorHighlight.HL_COMMENT
-      ) {
-        context.fillStyle = colors.comment;
-      } else if (
-        textContent.textHL[indexY][indexX] === EditorHighlight.HL_KEYWORD1
-      ) {
-        context.fillStyle = colors.keyword;
-      } else if (
-        textContent.textHL[indexY][indexX] === EditorHighlight.HL_KEYWORD2
-      ) {
-        context.fillStyle = colors.link;
+      switch (textContent.textHL[indexY][indexX]) {
+        case EditorHighlight.HL_NUMBER:
+          context.fillStyle = colors.number;
+          break;
+        case EditorHighlight.HL_STRING:
+          context.fillStyle = colors.string;
+          break;
+        case EditorHighlight.HL_COMMENT:
+          context.fillStyle = colors.comment;
+          break;
+        case EditorHighlight.HL_KEYWORD1:
+          context.fillStyle = colors.keyword;
+          break;
+        case EditorHighlight.HL_KEYWORD2:
+          context.fillStyle = colors.link;
+          break;
+        default:
+          context.fillStyle = colors.text;
+          break;
       }
-      context.fillText(char, charXY[0] * indexX, charXY[1] * (indexY + 1));
+      context.fillText(
+        char,
+        charXY.width * indexX,
+        charXY.height * (indexY + 1)
+      );
       context.restore();
     }
   }
 }
 
-export function renderCursor(
+function renderCursor(
   canvas: HTMLCanvasElement,
-  context: CanvasRenderingContext2D
+  context: CanvasRenderingContext2D,
+  charXY: FontContext,
+  cursor: Cursor
 ) {
   context.save();
   context.beginPath();
-  context.moveTo(cursor.X * charXY[0] + 2, cursor.Y * charXY[1] + 1);
+  context.moveTo(cursor.X * charXY.width + 2, cursor.Y * charXY.height + 1);
   context.lineTo(
-    cursor.X * charXY[0] + 2,
-    cursor.Y * charXY[1] + charXY[1] + 4
+    cursor.X * charXY.width + 2,
+    cursor.Y * charXY.height + charXY.height + 4
   );
   context.lineWidth = 2;
   context.strokeStyle = colors.cursor;
@@ -67,10 +76,14 @@ export function renderCursor(
   context.restore();
 }
 
-export function renderScreen(
+export default function renderScreen(
   canvas: HTMLCanvasElement,
-  context: CanvasRenderingContext2D
+  context: CanvasRenderingContext2D,
+  charXY: FontContext,
+  cursor: Cursor,
+  textContent: TextContent,
+  scroller: Scroll
 ) {
-  renderText(canvas, context);
-  renderCursor(canvas, context);
+  renderText(canvas, context, charXY, textContent, scroller);
+  renderCursor(canvas, context, charXY, cursor);
 }

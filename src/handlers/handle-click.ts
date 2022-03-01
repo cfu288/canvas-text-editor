@@ -3,24 +3,28 @@ import {
   cursor,
   canvas,
   context,
-  charXY,
   scroller,
   requestRender,
 } from "../app";
+import { FontContext } from "../models/font-context";
 
 export function getCharPositionFromCanvasPosition(
+  fontContext: FontContext,
   clientX,
   clientY
 ): [x: number, y: number] {
   const rect = canvas.getBoundingClientRect();
-  const x = Math.round((scroller.X + clientX - rect.left) / charXY[0]);
+  const x = Math.round((scroller.X + clientX - rect.left) / fontContext.width);
   const y =
-    Math.round((Math.abs(scroller.Y) + clientY - rect.top) / charXY[1]) - 1;
+    Math.round(
+      (Math.abs(scroller.Y) + clientY - rect.top) / fontContext.height
+    ) - 1;
   return [x, y];
 }
 
-export function handleClick(event: MouseEvent) {
+export function handleClick(event: MouseEvent, fontContext: FontContext) {
   const [x, y]: [number, number] = getCharPositionFromCanvasPosition(
+    fontContext,
     event.clientX,
     event.clientY
   );

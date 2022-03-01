@@ -50,6 +50,23 @@ export class GapBuffer<T> {
     return this.data[ix];
   }
 
+  slice(ix: number, ix2: number) {
+    if (ix >= this.gapStart && ix2 >= this.gapStart) {
+      return this.data.slice(
+        ix + (this.gapEnd - this.gapStart),
+        ix2 + (this.gapEnd - this.gapStart)
+      );
+    } else if (ix < this.gapStart && ix2 >= this.gapStart) {
+      return this.data
+        .slice(ix, this.gapStart)
+        .concat(
+          this.data.slice(this.gapEnd, ix2 + (this.gapEnd - this.gapStart))
+        );
+    } else {
+      return this.data.slice(ix, ix2);
+    }
+  }
+
   push(value: T) {
     this.insert(this.length, value);
   }
@@ -61,8 +78,8 @@ export class GapBuffer<T> {
       this.gapStart = 0;
     }
   }
+
   /**
-   *
    * @param ix index to move gap to
    */
   private moveGap(ix: number) {
@@ -125,7 +142,7 @@ export class GapBuffer<T> {
     }
   }
 
-  *entries() {
+  *entries(): Generator<[number, T], void, unknown> {
     let publicIndex = 0;
     let ix = 0;
     while (ix < this.data.length) {

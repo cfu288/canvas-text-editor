@@ -11,23 +11,8 @@ export class TextRow<T> {
     return new TextRow([...this._text]);
   }
 
-  /**
-   * @deprecated
-   * Makes a copy of the internal array. Avoid in hot loops
-   */
-  get text(): T[] {
-    return [...this._text];
-  }
-
   get(ix: number) {
     return this._text.get(ix);
-  }
-
-  /**
-   * An internal method only used by concat, need to improve api to hide this
-   */
-  get gb() {
-    return this._text;
   }
 
   get length(): number {
@@ -38,12 +23,19 @@ export class TextRow<T> {
     return this._text.get(i);
   }
 
-  entries() {
+  slice(ix: number, ix2: number) {
+    return this._text.slice(ix, ix2);
+  }
+
+  entries(): Generator<[number, T], void, unknown> {
     return this._text.entries();
   }
 
   concat(row: TextRow<T>): TextRow<T> {
-    this._text.concat(row.gb);
+    //TODO: make more efficient with .pushArray or something
+    for (const item of row) {
+      this._text.push(item);
+    }
     return this;
   }
 
@@ -61,5 +53,11 @@ export class TextRow<T> {
 
   deleteValueAt(index: number): void {
     this._text.delete(index);
+  }
+
+  *[Symbol.iterator]() {
+    for (const item of this._text) {
+      yield item;
+    }
   }
 }

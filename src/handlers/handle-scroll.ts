@@ -1,14 +1,4 @@
-import { renderScreen } from "../renderers/render-screen";
-import {
-  textContent,
-  cursor,
-  canvas,
-  context,
-  scroller,
-  requestRender,
-} from "../app";
-import { TextRow } from "../models/text-row";
-import { FileRegistry } from "../services/file-registry";
+import { scroller, requestRender } from "../app";
 
 export function handleScroll(e: WheelEvent) {
   const yscroll = e.deltaY;

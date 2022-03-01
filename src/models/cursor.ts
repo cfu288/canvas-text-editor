@@ -1,15 +1,13 @@
+import { TextContent } from "./text-content";
+
 export class Cursor {
   private cursorX: number = 0;
   private cursorY: number = 0;
   private cursorVisible: boolean = true;
-  private _context = undefined;
-  private _canvas = undefined;
-  private _textContent: TextContent;
+  private textContent: TextContent;
 
-  constructor(canvas, context, textArea: TextContent) {
-    this._textContent = textArea;
-    this._context = context;
-    this._canvas = canvas;
+  constructor(textArea: TextContent) {
+    this.textContent = textArea;
   }
 
   get X(): number {
@@ -30,11 +28,11 @@ export class Cursor {
   }
 
   moveRight(by: number = 1) {
-    if (this._textContent.charAt(this.cursorX, this.cursorY)) {
+    if (this.textContent.charAt(this.cursorX, this.cursorY)) {
       this.cursorX += by;
-    } else if (this._textContent.rowAt(this.cursorY)) {
+    } else if (this.textContent.rowAt(this.cursorY)) {
       this.setPosition([
-        this._textContent.rowAt(this.cursorY).length,
+        this.textContent.rowAt(this.cursorY).length,
         this.cursorY,
       ]);
     }
@@ -48,11 +46,8 @@ export class Cursor {
 
   moveUp(by: number = 1) {
     if (this.cursorY - by >= 0) {
-      const charAbove = this._textContent.charAt(
-        this.cursorX,
-        this.cursorY - 1
-      );
-      const rowAbove = this._textContent.rowAt(this.cursorY - 1);
+      const charAbove = this.textContent.charAt(this.cursorX, this.cursorY - 1);
+      const rowAbove = this.textContent.rowAt(this.cursorY - 1);
       if (charAbove) {
         this.cursorY -= by;
       } else if (rowAbove) {
@@ -62,8 +57,8 @@ export class Cursor {
   }
 
   moveDown(by: number = 1) {
-    const charBelow = this._textContent.charAt(this.cursorX, this.cursorY + 1);
-    const rowBelow = this._textContent.rowAt(this.cursorY + 1);
+    const charBelow = this.textContent.charAt(this.cursorX, this.cursorY + 1);
+    const rowBelow = this.textContent.rowAt(this.cursorY + 1);
     if (charBelow) {
       this.cursorY += by;
     } else if (rowBelow) {

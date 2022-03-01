@@ -2,28 +2,30 @@ import { createCanvas } from "./initializers/create-canvas";
 import { Cursor } from "./models/cursor";
 import { Scroll } from "./models/scroll";
 import { handleKey, handleClick } from "./handlers";
-import { initFontAndGrid } from "./initializers/init-font-and-grid";
-import { renderScreen } from "./renderers/render-screen";
+import { FontContext } from "./models/font-context";
+import renderScreen from "./renderers/render-screen";
 import { TextContent } from "./models/text-content";
 import { FileRegistry } from "./services/file-registry";
 import { handleScroll } from "./handlers/handle-scroll";
 
 export const { canvas, context } = createCanvas();
-export const { font, fontSize, linePadding, charXY } = initFontAndGrid(context);
-export const textContent = new TextContent(charXY);
-export const cursor = new Cursor(canvas, context, textContent);
+export const fontContext = new FontContext(context, "Courier New", 16, 4);
+export const textContent = new TextContent(fontContext);
+export const cursor = new Cursor(textContent);
 export const scroller = new Scroll(canvas, context, textContent);
 
 export function requestRender() {
-  window.requestAnimationFrame(() => renderScreen(canvas, context));
+  window.requestAnimationFrame(() =>
+    renderScreen(canvas, context, fontContext, cursor, textContent, scroller)
+  );
 }
 
 document.addEventListener("keydown", handleKey);
-canvas.addEventListener("mousedown", handleClick);
+canvas.addEventListener("mousedown", (e) => handleClick(e, fontContext));
 window.addEventListener("wheel", handleScroll);
 window.addEventListener("resize", () => {
   createCanvas();
-  initFontAndGrid(context);
+  fontContext.setFontStyle();
   requestRender();
 });
 document.getElementById("openFileButton").addEventListener("click", () => {
