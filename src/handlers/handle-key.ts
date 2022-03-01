@@ -1,11 +1,4 @@
-import {
-  textContent,
-  cursor,
-  canvas,
-  context,
-  scroller,
-  requestRender,
-} from "../app";
+import { textContent, cursor, scroller, requestRender } from "../app";
 import { TextRow } from "../models/text-row";
 import { FileRegistry } from "../services/file-registry";
 import { updateRowSyntaxHighlighting } from "../renderers/update-row-syntax-highlighing";
@@ -93,7 +86,7 @@ export function handleKey(e: KeyboardEvent) {
     }
   } else {
     // Default key press input
-    let currentRow = textContent.rowAt(cursor.Y);
+    const currentRow = textContent.rowAt(cursor.Y);
     switch (e.code) {
       case "Escape": {
         break;

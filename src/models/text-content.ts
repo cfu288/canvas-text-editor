@@ -7,7 +7,7 @@ export class TextContent {
   private _text: TextRow<string>[] = [new TextRow()];
   private _text_hl: EditorHighlight[][] = [[]];
   private _buffer: TextRow<string>[] = [];
-  private _fileName: string = "untitled.txt";
+  private _fileName = "untitled.txt";
   private _fontContext: FontContext;
 
   constructor(fontContext: FontContext) {
@@ -42,8 +42,8 @@ export class TextContent {
       flattenedArr.push([...row, "\n"].join(""));
     }
     const flattenedString = flattenedArr.join("");
-    let buf = new ArrayBuffer(flattenedArr.length); // 2 bytes for each char
-    let bufView = new Uint8Array(buf);
+    const buf = new ArrayBuffer(flattenedArr.length); // 2 bytes for each char
+    const bufView = new Uint8Array(buf);
     for (let i = 0, strLen = flattenedArr.length; i < strLen; i++) {
       bufView[i] = flattenedString.charCodeAt(i);
     }

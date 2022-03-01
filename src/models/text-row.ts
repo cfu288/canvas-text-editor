@@ -8,7 +8,7 @@ export class TextRow<T> {
   }
 
   clone() {
-    return new TextRow([...this._text]);
+    return new TextRow([...this]);
   }
 
   get(ix: number) {

@@ -3,7 +3,7 @@ export class FontContext {
   width: number;
   fontSize: number;
   linePadding: number;
-  font: string = "Courier New";
+  font = "Courier New";
   context: CanvasRenderingContext2D;
 
   constructor(

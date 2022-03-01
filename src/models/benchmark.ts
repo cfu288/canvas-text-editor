@@ -5,7 +5,7 @@ function random(max) {
 }
 
 const t0 = performance.now();
-var array = [];
+const array = [];
 for (var i = 0; i < 500; i++) {
   var ix = random(array.length);
   for (var j = 0; j < 100; ++j) {
@@ -18,7 +18,7 @@ for (const x in array) {
 const t1 = performance.now();
 
 const t2 = performance.now();
-var buffer1 = new GapBuffer<number>([]);
+const buffer1 = new GapBuffer<number>([]);
 for (var i = 0; i < 500; i++) {
   var ix = random(buffer1.length);
   for (var j = 0; j < 100; ++j) {

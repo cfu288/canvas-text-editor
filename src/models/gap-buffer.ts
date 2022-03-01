@@ -1,9 +1,9 @@
 // inspired by https://github.com/jaz303/gapbuffer
 export class GapBuffer<T> {
   private data: (T | undefined)[] = [];
-  private gapSize: number = 32;
-  private gapStart: number = 0;
-  private gapEnd: number = 32;
+  private gapSize = 32;
+  private gapStart = 0;
+  private gapEnd = 32;
 
   constructor(data: (T | undefined)[], gapSize = 32) {
     const buff: (T | undefined)[] =
@@ -92,7 +92,7 @@ export class GapBuffer<T> {
       // [1,2,3,_,_,4,5]
       // [  ^   *   *  ]
       // delta = 32 - 1 = 2
-      let delta = this.gapStart - ix;
+      const delta = this.gapStart - ix;
 
       for (let i = delta - 1; i >= 0; i--) {
         // gapEnd = 5
@@ -112,7 +112,7 @@ export class GapBuffer<T> {
       // [  *   *      ]
     } else {
       // Same logic as above but opposite
-      let delta = ix - this.gapStart;
+      const delta = ix - this.gapStart;
       for (let i = 0; i < delta; ++i) {
         this.data[this.gapStart + i] = this.data[this.gapEnd + i];
       }

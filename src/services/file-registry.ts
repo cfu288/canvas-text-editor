@@ -1,7 +1,6 @@
-// import { fs, dialog, BaseDirectory } from "@tauri-apps/api";
-
 import { TextContent } from "../models/text-content";
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace FileRegistry {
   export function getFileContents(file: File): Promise<string> {
     return file.text();

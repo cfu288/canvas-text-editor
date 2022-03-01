@@ -1,11 +1,11 @@
 export function createCanvas() {
-  let ratio = window.devicePixelRatio;
-  let cv = document.getElementById("myCanvas") as HTMLCanvasElement;
-  let div = document.getElementById("canvasContainer");
+  const ratio = window.devicePixelRatio;
+  const cv = document.getElementById("myCanvas") as HTMLCanvasElement;
+  const div = document.getElementById("canvasContainer");
   cv.width = div.clientWidth;
   cv.height = div.clientHeight;
   // get current size of the canvas
-  let rect = div.getBoundingClientRect();
+  const rect = div.getBoundingClientRect();
   // increase the actual size of our canvas
   cv.width = rect.width * ratio;
   cv.height = rect.height * ratio;

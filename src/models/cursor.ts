@@ -1,9 +1,9 @@
 import { TextContent } from "./text-content";
 
 export class Cursor {
-  private cursorX: number = 0;
-  private cursorY: number = 0;
-  private cursorVisible: boolean = true;
+  private cursorX = 0;
+  private cursorY = 0;
+  private cursorVisible = true;
   private textContent: TextContent;
 
   constructor(textArea: TextContent) {
@@ -27,7 +27,7 @@ export class Cursor {
     return [this.cursorX, this.cursorY];
   }
 
-  moveRight(by: number = 1) {
+  moveRight(by = 1) {
     if (this.textContent.charAt(this.cursorX, this.cursorY)) {
       this.cursorX += by;
     } else if (this.textContent.rowAt(this.cursorY)) {
@@ -38,13 +38,13 @@ export class Cursor {
     }
   }
 
-  moveLeft(by: number = 1) {
+  moveLeft(by = 1) {
     if (this.cursorX - by >= 0) {
       this.cursorX -= by;
     }
   }
 
-  moveUp(by: number = 1) {
+  moveUp(by = 1) {
     if (this.cursorY - by >= 0) {
       const charAbove = this.textContent.charAt(this.cursorX, this.cursorY - 1);
       const rowAbove = this.textContent.rowAt(this.cursorY - 1);
@@ -56,7 +56,7 @@ export class Cursor {
     }
   }
 
-  moveDown(by: number = 1) {
+  moveDown(by = 1) {
     const charBelow = this.textContent.charAt(this.cursorX, this.cursorY + 1);
     const rowBelow = this.textContent.rowAt(this.cursorY + 1);
     if (charBelow) {

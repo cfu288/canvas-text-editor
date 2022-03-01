@@ -1,11 +1,4 @@
-import {
-  textContent,
-  cursor,
-  canvas,
-  context,
-  scroller,
-  requestRender,
-} from "../app";
+import { textContent, cursor, canvas, scroller, requestRender } from "../app";
 import { FontContext } from "../models/font-context";
 
 export function getCharPositionFromCanvasPosition(

@@ -17,8 +17,11 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
     "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
     "autoprefixer": "^10.4.2",
     "babel-jest": "^27.5.1",
+    "eslint": "^8.10.0",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
     "lint-staged": "^12.3.4",
@@ -30,7 +33,8 @@
     "ts-node": "^10.5.0"
   },
   "lint-staged": {
-    "*.{js,css,md}": "prettier --write"
+    "*.{ts,js,css,md}": "prettier --write",
+    "*.{ts,js}": "eslint --fix"
   },
   "dependencies": {
     "@types/wicg-file-system-access": "^2020.9.5"

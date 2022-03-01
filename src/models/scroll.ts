@@ -1,8 +1,8 @@
 import { TextContent } from "./text-content";
 
 export class Scroll {
-  private cursorX: number = 0;
-  private cursorY: number = 0;
+  private cursorX = 0;
+  private cursorY = 0;
   private _context = undefined;
   private _canvas = undefined;
   private _textContent: TextContent;
@@ -20,7 +20,7 @@ export class Scroll {
     return this.cursorY;
   }
 
-  scrollUp(by: number = 200) {
+  scrollUp(by = 200) {
     if (this.cursorY >= 0) {
       this.cursorY == 0;
     } else if (this.cursorY + by > 0) {
@@ -33,7 +33,7 @@ export class Scroll {
   }
 
   // Todo: scroll speed leads to different results
-  scrollDown(by: number = 200) {
+  scrollDown(by = 200) {
     if (
       Math.abs(this.cursorY) + this._canvas.getBoundingClientRect().height <
       this._textContent.contentHeight
