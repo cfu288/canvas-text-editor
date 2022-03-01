@@ -1,20 +1,33 @@
 import { EditorHighlight } from "./editor-highlight";
 import { TextRow } from "./text-row";
+import { updateRowSyntaxHighlighting } from "../renderers/update-row-syntax-highlighing";
+
 export class TextContent {
   private _text: TextRow<string>[] = [new TextRow()];
   private _text_hl: EditorHighlight[][] = [[]];
   private _buffer: TextRow<string>[] = [];
   private _fileName: string = "untitled.txt";
-  constructor() {}
+  private _charXY: [number, number];
+  constructor(charXY: [number, number]) {
+    this._charXY = charXY;
+  }
+
+  get contentHeight() {
+    return this._text.length * this._charXY[1];
+  }
 
   readFromFile(name: string, s: string) {
     this._fileName = name || "untitled.txt";
     const rows = s.split("\n");
     const rowOfRows = [];
+    const rowOfRowsHL = [];
     for (const rowIn of rows) {
-      rowOfRows.push(new TextRow(rowIn.split("")));
+      const r = new TextRow(rowIn.split(""));
+      rowOfRows.push(r);
+      rowOfRowsHL.push(updateRowSyntaxHighlighting(r));
     }
     this._text = rowOfRows;
+    this._text_hl = rowOfRowsHL;
   }
 
   get name() {

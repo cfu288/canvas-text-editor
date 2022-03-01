@@ -75,10 +75,6 @@ export function updateRowSyntaxHighlighting(row: TextRow<string>) {
   while (i < row.length) {
     const ch = row.get(i);
 
-    if (ch === "z") {
-      debugger;
-    }
-
     // handle string highlighting
     if (in_string !== undefined) {
       HLArr.splice(i, 1, EditorHighlight.HL_STRING);

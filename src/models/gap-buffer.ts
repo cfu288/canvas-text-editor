@@ -1,6 +1,4 @@
 // inspired by https://github.com/jaz303/gapbuffer
-var splice = Array.prototype.splice;
-
 export class GapBuffer<T> {
   private data: (T | undefined)[] = [];
   private gapSize: number = 32;

@@ -1,7 +1,14 @@
-import { renderScreen } from "../renderers/render-screen";
-import { textContent, cursor, canvas, context, scroller } from "../app";
+import {
+  textContent,
+  cursor,
+  canvas,
+  context,
+  scroller,
+  requestRender,
+} from "../app";
 import { TextRow } from "../models/text-row";
 import { FileRegistry } from "../services/file-registry";
+import { updateRowSyntaxHighlighting } from "../renderers/update-row-syntax-highlighing";
 
 const OPEN_BRACKETS = new Set(["[", "{", "(", '"', "'"]);
 const BRACKETS_PAIR = {
@@ -14,29 +21,31 @@ const BRACKETS_PAIR = {
 
 export function handleKey(e: KeyboardEvent) {
   e.preventDefault();
+  // Two meta keys
   if (e.metaKey && e.shiftKey && ["ArrowUp", "ArrowDown"].includes(e.code)) {
     switch (e.code) {
       case "ArrowDown": {
         scroller.scrollDown();
-        window.requestAnimationFrame(() => renderScreen(canvas, context));
+        requestRender();
         break;
       }
       case "ArrowUp": {
         scroller.scrollUp();
-        window.requestAnimationFrame(() => renderScreen(canvas, context));
+        requestRender();
         break;
       }
       default:
         break;
     }
   }
+  // Single meta key
   if (e.metaKey || e.ctrlKey) {
     switch (e.code) {
       case "KeyO": {
         FileRegistry.promptFileSelect().then((file) =>
           FileRegistry.getFileContents(file).then((data) => {
             textContent.readFromFile(file.name, data);
-            window.requestAnimationFrame(() => renderScreen(canvas, context));
+            requestRender();
           })
         );
         break;
@@ -83,6 +92,7 @@ export function handleKey(e: KeyboardEvent) {
         break;
     }
   } else {
+    // Default key press input
     let currentRow = textContent.rowAt(cursor.Y);
     switch (e.code) {
       case "Escape": {
@@ -105,31 +115,15 @@ export function handleKey(e: KeyboardEvent) {
         break;
       }
       case "ArrowRight": {
-        if (textContent.charAt(cursor.X, cursor.Y)) {
-          cursor.moveRight();
-        } else if (textContent.rowAt(cursor.Y)) {
-          cursor.setPosition([textContent.rowAt(cursor.Y).length, cursor.Y]);
-        }
+        cursor.moveRight();
         break;
       }
       case "ArrowUp": {
-        const charAbove = textContent.charAt(cursor.X, cursor.Y - 1);
-        const rowAbove = textContent.rowAt(cursor.Y - 1);
-        if (charAbove) {
-          cursor.moveUp();
-        } else if (rowAbove) {
-          cursor.setPosition([rowAbove.length, cursor.Y - 1]);
-        }
+        cursor.moveUp();
         break;
       }
       case "ArrowDown": {
-        const charBelow = textContent.charAt(cursor.X, cursor.Y + 1);
-        const rowBelow = textContent.rowAt(cursor.Y + 1);
-        if (charBelow) {
-          cursor.moveDown();
-        } else if (rowBelow) {
-          cursor.setPosition([rowBelow.length, cursor.Y + 1]);
-        }
+        cursor.moveDown();
         break;
       }
       case "Enter": {
@@ -196,5 +190,8 @@ export function handleKey(e: KeyboardEvent) {
     }
   }
 
-  window.requestAnimationFrame(() => renderScreen(canvas, context));
+  textContent.textHL[cursor.Y] = updateRowSyntaxHighlighting(
+    textContent.rowAt(cursor.Y)
+  );
+  requestRender();
 }

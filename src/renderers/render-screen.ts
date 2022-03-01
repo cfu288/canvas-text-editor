@@ -1,8 +1,6 @@
 import { colors } from "../configuration/colors";
-import { charXY, cursor, textContent } from "../app";
-import { updateRowSyntaxHighlighting } from "./update-row-syntax-highlighing";
+import { charXY, cursor, textContent, scroller } from "../app";
 import { EditorHighlight } from "../models/editor-highlight";
-import { scroller } from "../app";
 
 export function renderText(
   canvas: HTMLCanvasElement,
@@ -23,7 +21,6 @@ export function renderText(
 
   for (const [indexY, row] of textContent.text.entries()) {
     // move this to update text row
-    textContent.textHL[indexY] = updateRowSyntaxHighlighting(row);
 
     context.fillStyle = colors.text;
     for (const [indexX, char] of row.entries()) {

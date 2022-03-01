@@ -1,9 +1,15 @@
+import { TextContent } from "./text-content";
+
 export class Scroll {
   private cursorX: number = 0;
   private cursorY: number = 0;
   private _context = undefined;
-  constructor(context) {
+  private _canvas = undefined;
+  private _textContent: TextContent;
+  constructor(canvas, context, textContent: TextContent) {
     this._context = context;
+    this._canvas = canvas;
+    this._textContent = textContent;
   }
 
   get X(): number {
@@ -26,8 +32,26 @@ export class Scroll {
     }
   }
 
+  // Todo: scroll speed leads to different results
   scrollDown(by: number = 200) {
-    this.cursorY -= by;
-    this._context.translate(0, 0 - by);
+    if (
+      Math.abs(this.cursorY) + this._canvas.getBoundingClientRect().height <
+      this._textContent.contentHeight
+    ) {
+      this.cursorY -= by;
+      this._context.translate(0, 0 - by);
+    } else if (
+      Math.abs(this.cursorY) + this._canvas.getBoundingClientRect().height >=
+      this._textContent.contentHeight
+    ) {
+      // Do nothing
+    } else {
+      const remainingHeight =
+        Math.abs(this.cursorY) +
+        this._canvas.getBoundingClientRect().height -
+        this._textContent.contentHeight;
+      this.cursorY -= remainingHeight;
+      this._context.translate(0, 0 - remainingHeight);
+    }
   }
 }

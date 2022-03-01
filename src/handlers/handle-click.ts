@@ -1,5 +1,13 @@
-import { renderScreen } from "../renderers/render-screen";
-import { textContent, cursor, canvas, context, charXY, scroller } from "../app";
+import {
+  textContent,
+  cursor,
+  canvas,
+  context,
+  charXY,
+  scroller,
+  requestRender,
+} from "../app";
+
 export function getCharPositionFromCanvasPosition(
   clientX,
   clientY
@@ -21,5 +29,5 @@ export function handleClick(event: MouseEvent) {
   } else if (textContent.rowAt(y)) {
     cursor.setPosition([textContent.rowAt(y).length, y]);
   }
-  window.requestAnimationFrame(() => renderScreen(canvas, context));
+  requestRender();
 }
