@@ -1,11 +1,11 @@
-import { scroller, requestRender } from "../app";
+import { scroll, requestRender } from "../app";
 
 export function handleScroll(e: WheelEvent) {
-  const yscroll = e.deltaY;
-  if (yscroll > 0) {
-    scroller.scrollDown(Math.abs(yscroll));
+  const scrollValue = e.deltaY;
+  if (scrollValue > 0) {
+    scroll.scrollDown(Math.abs(scrollValue));
   } else {
-    scroller.scrollUp(Math.abs(yscroll));
+    scroll.scrollUp(Math.abs(scrollValue));
   }
   requestRender();
 }

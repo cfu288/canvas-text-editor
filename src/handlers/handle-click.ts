@@ -1,33 +1,46 @@
-import { textContent, cursor, canvas, scroller, requestRender } from "../app";
-import { FontContext } from "../models/font-context";
-import { LineNumberContext } from "../models/line-number-context";
+import { requestRender } from "../app";
+import {
+  Cursor,
+  TextContent,
+  FontContext,
+  LineNumberContext,
+  Scroll,
+} from "../models";
 
 export function getCharPositionFromCanvasPosition(
+  canvas: HTMLCanvasElement,
   fontContext: FontContext,
   lineNumberContext: LineNumberContext,
-  clientX,
-  clientY
+  scroll: Scroll,
+  clientWidth,
+  clientHeight
 ): [x: number, y: number] {
   const rect = canvas.getBoundingClientRect();
   const x = Math.round(
-    (scroller.X + clientX - rect.left - lineNumberContext.offset) /
+    (scroll.X + clientWidth - rect.left - lineNumberContext.offset) /
       fontContext.width
   );
   const y =
     Math.round(
-      (Math.abs(scroller.Y) + clientY - rect.top) / fontContext.height
+      (Math.abs(scroll.Y) + clientHeight - rect.top) / fontContext.height
     ) - 1;
   return [x, y];
 }
 
 export function handleClick(
   event: MouseEvent,
+  canvas: HTMLCanvasElement,
+  textContent: TextContent,
   fontContext: FontContext,
-  lineNumberContext: LineNumberContext
+  lineNumberContext: LineNumberContext,
+  cursor: Cursor,
+  scroll: Scroll
 ) {
   const [x, y]: [number, number] = getCharPositionFromCanvasPosition(
+    canvas,
     fontContext,
     lineNumberContext,
+    scroll,
     event.clientX,
     event.clientY
   );

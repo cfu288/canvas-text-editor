@@ -1,15 +1,19 @@
-import { createCanvas } from "./initializers/create-canvas";
-import { Cursor } from "./models/cursor";
-import { Scroll } from "./models/scroll";
-import { handleKey, handleClick } from "./handlers";
-import { FontContext } from "./models/font-context";
-import { LineNumberContext } from "./models/line-number-context";
+import { handleClick, handleKey, handleScroll } from "./handlers";
+import { initializeCanvas } from "./initializers/initialize-canvas";
+import {
+  Cursor,
+  FontContext,
+  LineNumberContext,
+  Scroll,
+  TextContent,
+  ThemeProvider,
+} from "./models";
 import renderScreen from "./renderers/render-screen";
-import { TextContent } from "./models/text-content";
-import { FileRegistry } from "./services/file-registry";
-import { handleScroll } from "./handlers/handle-scroll";
+import { FileRegistry } from "./services";
 
-export const { canvas, context } = createCanvas();
+// Set up and inject dependencies
+export const { canvas, context } = initializeCanvas();
+export const themeProvider = new ThemeProvider();
 export const fontContext = new FontContext(context, "Courier New", 16, 4);
 export const textContent = new TextContent(fontContext);
 export const lineNumberContext = new LineNumberContext(
@@ -17,8 +21,9 @@ export const lineNumberContext = new LineNumberContext(
   fontContext
 );
 export const cursor = new Cursor(textContent);
-export const scroller = new Scroll(canvas, context, textContent);
+export const scroll = new Scroll(canvas, context, textContent);
 
+// Connect render to dependencies
 export function requestRender() {
   window.requestAnimationFrame(() =>
     renderScreen(
@@ -27,19 +32,29 @@ export function requestRender() {
       fontContext,
       cursor,
       textContent,
-      scroller,
-      lineNumberContext
+      scroll,
+      lineNumberContext,
+      themeProvider
     )
   );
 }
 
+// Set up event handlers
 document.addEventListener("keydown", handleKey);
 canvas.addEventListener("mousedown", (e) =>
-  handleClick(e, fontContext, lineNumberContext)
+  handleClick(
+    e,
+    canvas,
+    textContent,
+    fontContext,
+    lineNumberContext,
+    cursor,
+    scroll
+  )
 );
 window.addEventListener("wheel", handleScroll);
 window.addEventListener("resize", () => {
-  createCanvas();
+  initializeCanvas();
   fontContext.setFontStyle();
   requestRender();
 });
@@ -57,4 +72,5 @@ document.getElementById("saveFileButton").addEventListener("click", () => {
   });
 });
 
+// Initialize view by calling first render
 requestRender();

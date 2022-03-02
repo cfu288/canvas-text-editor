@@ -64,8 +64,12 @@ function isWhitespace(s: string) {
 
 /**
  * Row based syntax highlighting. To be replaced by proper lexer based highlighting.
- * */
-export function updateRowSyntaxHighlighting(row: TextRow<string>) {
+ * @param row Row of text to syntax highlight
+ * @returns an array of EditorHighlight values to indicate how each char should be highlighted
+ */
+export function updateRowSyntaxHighlighting(
+  row: TextRow<string>
+): EditorHighlight[] {
   const HLArr = Array(row.length).fill(EditorHighlight.HL_NORMAL);
 
   // store if prev char was a separator char

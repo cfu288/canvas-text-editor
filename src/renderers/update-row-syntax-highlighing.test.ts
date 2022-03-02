@@ -29,6 +29,36 @@ test.each([
 
 test.each([
   [
+    '"in"'.split(""),
+    [
+      EditorHighlight.HL_STRING,
+      EditorHighlight.HL_STRING,
+      EditorHighlight.HL_STRING,
+      EditorHighlight.HL_STRING,
+    ],
+  ],
+  [
+    "'const'".split(""),
+    [
+      EditorHighlight.HL_STRING,
+      EditorHighlight.HL_STRING,
+      EditorHighlight.HL_STRING,
+      EditorHighlight.HL_STRING,
+      EditorHighlight.HL_STRING,
+      EditorHighlight.HL_STRING,
+      EditorHighlight.HL_STRING,
+    ],
+  ],
+])(
+  "primary keywords inside of strings are syntax highlighted as strings",
+  async (arr1, arr2) => {
+    const value = updateRowSyntaxHighlighting(new TextRow(arr1));
+    expect(value).toEqual(arr2);
+  }
+);
+
+test.each([
+  [
     "export ".split(""),
     [
       EditorHighlight.HL_KEYWORD2,

@@ -1,10 +1,12 @@
-import { colors } from "../configuration/colors";
-import { EditorHighlight } from "../models/editor-highlight";
-import { Cursor } from "../models/cursor";
-import { TextContent } from "../models/text-content";
-import { Scroll } from "../models/scroll";
-import { FontContext } from "../models/font-context";
-import { LineNumberContext } from "../models/line-number-context";
+import {
+  EditorHighlight,
+  Cursor,
+  TextContent,
+  Scroll,
+  FontContext,
+  ThemeProvider,
+  LineNumberContext,
+} from "../models";
 
 function renderText(
   canvas: HTMLCanvasElement,
@@ -12,7 +14,8 @@ function renderText(
   charXY: FontContext,
   textContent: TextContent,
   scroller: Scroll,
-  lineNumberContext: LineNumberContext
+  lineNumberContext: LineNumberContext,
+  themeProvider: ThemeProvider
 ) {
   // Store the current transformation matrix
   context.save();
@@ -22,15 +25,15 @@ function renderText(
   // Restore the transform
   context.restore();
 
-  context.fillStyle = colors.background;
+  context.fillStyle = themeProvider.theme.background;
   context.fillRect(0, Math.abs(scroller.Y), canvas.width, canvas.height);
 
   for (const [indexY, row] of textContent.entries()) {
-    context.fillStyle = colors.text;
+    context.fillStyle = themeProvider.theme.text;
 
     context.save();
     // line numbers
-    context.fillStyle = colors.number;
+    context.fillStyle = themeProvider.theme.number;
     context.fillText(
       lineNumberContext.generateLineNumberText(indexY),
       0,
@@ -42,22 +45,22 @@ function renderText(
       context.save();
       switch (textContent.textHL[indexY][indexX]) {
         case EditorHighlight.HL_NUMBER:
-          context.fillStyle = colors.number;
+          context.fillStyle = themeProvider.theme.number;
           break;
         case EditorHighlight.HL_STRING:
-          context.fillStyle = colors.string;
+          context.fillStyle = themeProvider.theme.string;
           break;
         case EditorHighlight.HL_COMMENT:
-          context.fillStyle = colors.comment;
+          context.fillStyle = themeProvider.theme.comment;
           break;
         case EditorHighlight.HL_KEYWORD1:
-          context.fillStyle = colors.keyword;
+          context.fillStyle = themeProvider.theme.keyword;
           break;
         case EditorHighlight.HL_KEYWORD2:
-          context.fillStyle = colors.link;
+          context.fillStyle = themeProvider.theme.link;
           break;
         default:
-          context.fillStyle = colors.text;
+          context.fillStyle = themeProvider.theme.text;
           break;
       }
       context.fillText(
@@ -75,7 +78,8 @@ function renderCursor(
   context: CanvasRenderingContext2D,
   fontContext: FontContext,
   cursor: Cursor,
-  lineNumberContext: LineNumberContext
+  lineNumberContext: LineNumberContext,
+  themeProvider: ThemeProvider
 ) {
   context.save();
   context.beginPath();
@@ -88,7 +92,7 @@ function renderCursor(
     cursor.Y * fontContext.height + fontContext.height + 4
   );
   context.lineWidth = 2;
-  context.strokeStyle = colors.cursor;
+  context.strokeStyle = themeProvider.theme.cursor;
   context.stroke();
   context.restore();
 }
@@ -100,7 +104,8 @@ export default function renderScreen(
   cursor: Cursor,
   textContent: TextContent,
   scroller: Scroll,
-  lineNumberContext: LineNumberContext
+  lineNumberContext: LineNumberContext,
+  themeProvider: ThemeProvider
 ) {
   renderText(
     canvas,
@@ -108,7 +113,15 @@ export default function renderScreen(
     fontContext,
     textContent,
     scroller,
-    lineNumberContext
+    lineNumberContext,
+    themeProvider
   );
-  renderCursor(canvas, context, fontContext, cursor, lineNumberContext);
+  renderCursor(
+    canvas,
+    context,
+    fontContext,
+    cursor,
+    lineNumberContext,
+    themeProvider
+  );
 }

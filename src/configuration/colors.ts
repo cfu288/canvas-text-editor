@@ -1,4 +1,5 @@
-export const colors = {
+export const defaultTheme: ColorTheme = {
+  name: "Dracula",
   background: "#282a36",
   keyword: "#ff79c6",
   title: "#50fa7b",
@@ -9,3 +10,16 @@ export const colors = {
   comment: "#6272a4",
   number: "#bd93f9",
 };
+
+export interface ColorTheme {
+  name: string; // name of the theme
+  background: string;
+  keyword: string;
+  title: string;
+  text: string;
+  link: string;
+  cursor: string;
+  string: string;
+  comment: string;
+  number: string;
+}

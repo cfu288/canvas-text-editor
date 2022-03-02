@@ -1,4 +1,4 @@
-export function createCanvas() {
+export function initializeCanvas() {
   const ratio = window.devicePixelRatio;
   const cv = document.getElementById("myCanvas") as HTMLCanvasElement;
   const div = document.getElementById("canvasContainer");

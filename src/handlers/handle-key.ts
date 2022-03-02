@@ -1,4 +1,4 @@
-import { textContent, cursor, scroller, requestRender } from "../app";
+import { textContent, cursor, scroll, requestRender } from "../app";
 import { TextRow } from "../models/text-row";
 import { FileRegistry } from "../services/file-registry";
 import { updateRowSyntaxHighlighting } from "../renderers/update-row-syntax-highlighing";
@@ -18,12 +18,12 @@ export function handleKey(e: KeyboardEvent) {
   if (e.metaKey && e.shiftKey && ["ArrowUp", "ArrowDown"].includes(e.code)) {
     switch (e.code) {
       case "ArrowDown": {
-        scroller.scrollDown();
+        scroll.scrollDown();
         requestRender();
         break;
       }
       case "ArrowUp": {
-        scroller.scrollUp();
+        scroll.scrollUp();
         requestRender();
         break;
       }
@@ -163,6 +163,7 @@ export function handleKey(e: KeyboardEvent) {
         break;
       }
       case "Tab": {
+        // Lol all tabs as spaces for now
         currentRow.push(" ");
         currentRow.push(" ");
         currentRow.push(" ");

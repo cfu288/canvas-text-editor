@@ -3,7 +3,6 @@ import { TextContent } from "./text-content";
 export class Cursor {
   private cursorX = 0;
   private cursorY = 0;
-  private cursorVisible = true;
   private textContent: TextContent;
 
   constructor(textArea: TextContent) {
