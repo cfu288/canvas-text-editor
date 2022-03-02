@@ -6,11 +6,13 @@ A proof of concept text editor implemented using HTML canvas. Extremely rough, d
 
 ![screenshot](./example.png)
 
-Currently implemented:
+## Currently implemented:
 
 - Mouse input handling
 - Keyboard navigation
 - Simple line buffer copy/cut/paste
 - Simple syntax highlighting
-- Open and read file with cmd+o
+- Line numbers
+- Open and read file with cmd+o (Chrome Only)
+- Save file (Chrome Only)
 - Scroll up and down (cmd/ctrl + shift arrow up/down)

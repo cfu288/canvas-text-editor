@@ -113,7 +113,7 @@ export function updateRowSyntaxHighlighting(row: TextRow<string>) {
     prev_sep = isSeparator(ch);
 
     // keywords
-    if (old_prev_sep) {
+    if (old_prev_sep && in_string === undefined) {
       // if the prev char was a seperator, check if next n chars in row is a keyword
       for (const kw of KEYWORDS) {
         // For now, just loop through keywords (inefficent)
