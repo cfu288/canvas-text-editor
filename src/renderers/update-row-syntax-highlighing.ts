@@ -62,7 +62,9 @@ function isWhitespace(s: string) {
   return s?.trim().length === 0 || s === undefined;
 }
 
-// Row based syntax highlighting
+/**
+ * Row based syntax highlighting. To be replaced by proper lexer based highlighting.
+ * */
 export function updateRowSyntaxHighlighting(row: TextRow<string>) {
   const HLArr = Array(row.length).fill(EditorHighlight.HL_NORMAL);
 

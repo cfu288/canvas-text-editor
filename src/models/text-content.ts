@@ -10,12 +10,32 @@ export class TextContent {
   private _fileName = "untitled.txt";
   private _fontContext: FontContext;
 
-  constructor(fontContext: FontContext) {
+  constructor(fontContext: FontContext, text?: TextRow<string>[]) {
     this._fontContext = fontContext;
+    this._text = text || [new TextRow()];
   }
 
+  get name() {
+    return this._fileName;
+  }
+
+  /**
+   * Return display height (rows * height of rows)
+   */
   get contentHeight() {
     return this._text.length * this._fontContext.height;
+  }
+
+  get length() {
+    return this._text.length;
+  }
+
+  get buffer() {
+    return this._buffer;
+  }
+
+  get textHL() {
+    return this._text_hl;
   }
 
   readFromFile(name: string, s: string) {
@@ -32,30 +52,21 @@ export class TextContent {
     this._text_hl = rowOfRowsHL;
   }
 
-  get name() {
-    return this._fileName;
-  }
-
+  /**
+   * Convert to an array buffer for saving to file
+   */
   toArrayBuffer() {
     const flattenedArr: string[] = [];
     for (const row of this._text) {
       flattenedArr.push([...row, "\n"].join(""));
     }
     const flattenedString = flattenedArr.join("");
-    const buf = new ArrayBuffer(flattenedArr.length); // 2 bytes for each char
+    const buf = new ArrayBuffer(flattenedArr.length);
     const bufView = new Uint8Array(buf);
     for (let i = 0, strLen = flattenedArr.length; i < strLen; i++) {
       bufView[i] = flattenedString.charCodeAt(i);
     }
     return buf;
-  }
-
-  get length() {
-    return this._text.length;
-  }
-
-  get buffer() {
-    return this._buffer;
   }
 
   addRowToBuffer(row: TextRow<string>) {
@@ -68,10 +79,6 @@ export class TextContent {
 
   clearBuffer() {
     this._buffer = [];
-  }
-
-  get textHL() {
-    return this._text_hl;
   }
 
   rowAt(y: number): TextRow<string> {
@@ -109,4 +116,34 @@ export class TextContent {
       yield [i, item];
     }
   }
+
+  *stream(): Generator<string, void, unknown> {
+    for (const row of this._text) {
+      for (const char of row) {
+        yield char;
+      }
+      yield "\n";
+    }
+  }
+
+  peekableStream(): PeekableGenerator<string> {
+    const stream = this.stream();
+    let state = stream.next();
+
+    const peekGen: PeekableGenerator<string> = (function* () {
+      while (!state.done) {
+        const current = state.value;
+        state = stream.next();
+        yield current;
+      }
+      return state.value;
+    })();
+    peekGen.peek = () => state;
+
+    return peekGen;
+  }
 }
+
+type PeekableGenerator<T> = Generator<T | void, void, unknown> & {
+  peek?: () => IteratorResult<T, void>;
+};

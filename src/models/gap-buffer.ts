@@ -73,10 +73,12 @@ export class GapBuffer<T> {
 
   pop() {
     this.moveGap(this.length);
+    const val = this.get(this.length);
     this.gapStart -= 1;
     if (this.gapStart < 0) {
       this.gapStart = 0;
     }
+    return val;
   }
 
   /**

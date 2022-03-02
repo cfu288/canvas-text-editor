@@ -7,28 +7,37 @@ export class TextRow<T> {
     this._text = new GapBuffer<T>(array || []);
   }
 
-  clone() {
-    return new TextRow([...this]);
-  }
-
-  get(ix: number) {
-    return this._text.get(ix);
-  }
-
   get length(): number {
     return this._text.length;
   }
 
-  charAtIndex(i: number) {
-    return this._text.get(i);
+  /**
+   * Get item in row at a specific index
+   * @param ix index to fetch item from
+   * @returns item at index
+   */
+  get(ix: number) {
+    return this._text.get(ix);
   }
 
   slice(ix: number, ix2: number) {
     return this._text.slice(ix, ix2);
   }
 
-  entries(): Generator<[number, T], void, unknown> {
-    return this._text.entries();
+  insertValueAt(index: number, value: T): void {
+    this._text.insert(index, value);
+  }
+
+  deleteAt(index: number): void {
+    this._text.delete(index);
+  }
+
+  push(value: T): void {
+    this._text.push(value);
+  }
+
+  pop(): T {
+    return this._text.pop();
   }
 
   concat(row: TextRow<T>): TextRow<T> {
@@ -39,25 +48,17 @@ export class TextRow<T> {
     return this;
   }
 
-  insertValueAt(index: number, value: T): void {
-    this._text.insert(index, value);
-  }
-
-  push(value: T): void {
-    this._text.push(value);
-  }
-
-  pop(): void {
-    this._text.pop();
-  }
-
-  deleteValueAt(index: number): void {
-    this._text.delete(index);
+  clone() {
+    return new TextRow([...this]);
   }
 
   *[Symbol.iterator]() {
     for (const item of this._text) {
       yield item;
     }
+  }
+
+  entries(): Generator<[number, T], void, unknown> {
+    return this._text.entries();
   }
 }

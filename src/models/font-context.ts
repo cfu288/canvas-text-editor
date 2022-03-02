@@ -1,10 +1,15 @@
+/**
+ * A context object that can be used to set the font for a canvas and
+ * calculate the height or width of a character given a specific font
+ * and font size. This is the basis for creating a grid of characters.
+ */
 export class FontContext {
-  height: number;
-  width: number;
-  fontSize: number;
-  linePadding: number;
-  font = "Courier New";
-  context: CanvasRenderingContext2D;
+  private _height: number;
+  private _width: number;
+  private _fontSize: number;
+  private _linePadding: number;
+  private _font = "Courier New";
+  private context: CanvasRenderingContext2D;
 
   constructor(
     context: CanvasRenderingContext2D,
@@ -12,20 +17,27 @@ export class FontContext {
     fontSize: number,
     linePadding: number
   ) {
-    this.font = font || "Courier New";
-    this.fontSize = fontSize;
-    context.font = `${this.fontSize}px ${this.font}`;
-    this.width = context.measureText(["a"].join("")).width;
-    this.linePadding = linePadding;
-    this.height = fontSize + linePadding;
+    this._font = font || "Courier New";
+    this._fontSize = fontSize;
+    context.font = `${this._fontSize}px ${this._font}`;
+    this._width = context.measureText(["a"].join("")).width;
+    this._linePadding = linePadding;
     this.context = context;
   }
 
+  get height() {
+    return this._fontSize + this._linePadding;
+  }
+
+  get width() {
+    return this._width;
+  }
+
   get fontStyle() {
-    return `${this.fontSize}px ${this.font}`;
+    return `${this._fontSize}px ${this._font}`;
   }
 
   setFontStyle() {
-    this.context.font = `${this.fontSize}px ${this.font}`;
+    this.context.font = `${this._fontSize}px ${this._font}`;
   }
 }
