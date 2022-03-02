@@ -143,7 +143,7 @@ export function handleKey(e: KeyboardEvent) {
       case "Backspace": {
         if (cursor.X > 0) {
           // delete item behind cursor
-          currentRow.deleteValueAt(cursor.X - 1);
+          currentRow.deleteAt(cursor.X - 1);
           cursor.moveLeft();
         } else {
           // if prev line exist,

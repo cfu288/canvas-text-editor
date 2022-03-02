@@ -95,3 +95,17 @@ test("peekable can fetch next item in stream without losing current index", () =
 
   expect(peekable.next().done).toBe(true);
 });
+
+test("peekable can fetch next item in stream without losing current index in for loop", () => {
+  const tc = new TextContent(new FontContext(jest.fn() as any, "1", 1, 1), [
+    new TextRow("hi how are you".split("")),
+  ]);
+
+  const peekable = tc.peekableStream();
+  let next: string | void = "h";
+
+  for (const item of peekable) {
+    expect(item).toBe(next);
+    next = peekable.peek().value;
+  }
+});

@@ -4,13 +4,15 @@ import { Cursor } from "../models/cursor";
 import { TextContent } from "../models/text-content";
 import { Scroll } from "../models/scroll";
 import { FontContext } from "../models/font-context";
+import { LineNumberContext } from "../models/line-number-context";
 
 function renderText(
   canvas: HTMLCanvasElement,
   context: CanvasRenderingContext2D,
   charXY: FontContext,
   textContent: TextContent,
-  scroller: Scroll
+  scroller: Scroll,
+  lineNumberContext: LineNumberContext
 ) {
   // Store the current transformation matrix
   context.save();
@@ -25,6 +27,17 @@ function renderText(
 
   for (const [indexY, row] of textContent.entries()) {
     context.fillStyle = colors.text;
+
+    context.save();
+    // line numbers
+    context.fillStyle = colors.number;
+    context.fillText(
+      lineNumberContext.generateLineNumberText(indexY),
+      0,
+      charXY.height * (indexY + 1)
+    );
+    context.restore();
+
     for (const [indexX, char] of row.entries()) {
       context.save();
       switch (textContent.textHL[indexY][indexX]) {
@@ -49,7 +62,7 @@ function renderText(
       }
       context.fillText(
         char,
-        charXY.width * indexX,
+        lineNumberContext.offset + charXY.width * indexX,
         charXY.height * (indexY + 1)
       );
       context.restore();
@@ -60,15 +73,19 @@ function renderText(
 function renderCursor(
   canvas: HTMLCanvasElement,
   context: CanvasRenderingContext2D,
-  charXY: FontContext,
-  cursor: Cursor
+  fontContext: FontContext,
+  cursor: Cursor,
+  lineNumberContext: LineNumberContext
 ) {
   context.save();
   context.beginPath();
-  context.moveTo(cursor.X * charXY.width + 2, cursor.Y * charXY.height + 1);
+  context.moveTo(
+    lineNumberContext.offset + cursor.X * fontContext.width + 2,
+    cursor.Y * fontContext.height + 1
+  );
   context.lineTo(
-    cursor.X * charXY.width + 2,
-    cursor.Y * charXY.height + charXY.height + 4
+    lineNumberContext.offset + cursor.X * fontContext.width + 2,
+    cursor.Y * fontContext.height + fontContext.height + 4
   );
   context.lineWidth = 2;
   context.strokeStyle = colors.cursor;
@@ -79,11 +96,19 @@ function renderCursor(
 export default function renderScreen(
   canvas: HTMLCanvasElement,
   context: CanvasRenderingContext2D,
-  charXY: FontContext,
+  fontContext: FontContext,
   cursor: Cursor,
   textContent: TextContent,
-  scroller: Scroll
+  scroller: Scroll,
+  lineNumberContext: LineNumberContext
 ) {
-  renderText(canvas, context, charXY, textContent, scroller);
-  renderCursor(canvas, context, charXY, cursor);
+  renderText(
+    canvas,
+    context,
+    fontContext,
+    textContent,
+    scroller,
+    lineNumberContext
+  );
+  renderCursor(canvas, context, fontContext, cursor, lineNumberContext);
 }

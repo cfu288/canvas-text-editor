@@ -38,6 +38,11 @@ export class TextContent {
     return this._text_hl;
   }
 
+  // used when calculating offset on render to place line numbers on left
+  get lineNumberWidth() {
+    return this.length.toString().length;
+  }
+
   readFromFile(name: string, s: string) {
     this._fileName = name || "untitled.txt";
     const rows = s.split("\n");
