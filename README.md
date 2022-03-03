@@ -6,10 +6,16 @@ A proof-of-concept text editor implemented using HTML canvas. This is an extreme
 
 ![screenshot](./example.png)
 
+## Requirements
+
+- npm
+
 ## Installation
 
-Clone this repository and run `npm start` to run a local development server.
-Run `npm build` to generate a production build.
+`npm install` to install dependencies.
+`npm start` to run a local development server.
+`npm run build` to generate a production build.
+`npm test` to run unit tests.
 
 ## Currently implemented:
 
