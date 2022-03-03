@@ -1,10 +1,15 @@
 # Canvas Text Editor
 
-A proof of concept text editor implemented using HTML canvas. Extremely rough, don't use for anything serious.
+A proof-of-concept text editor implemented using HTML canvas. This is an extremely rough prototype, don't use for anything serious as it is missing features like accessibility.
 
 [Demo](https://cfu288.github.io/canvas-text-editor/)
 
 ![screenshot](./example.png)
+
+## Installation
+
+Clone this repository and run `npm start` to run a local development server.
+Run `npm build` to generate a production build.
 
 ## Currently implemented:
 
@@ -16,3 +21,7 @@ A proof of concept text editor implemented using HTML canvas. Extremely rough, d
 - Open and read file with cmd+o (Chrome Only)
 - Save file (Chrome Only)
 - Scroll up and down (cmd/ctrl + shift arrow up/down)
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
