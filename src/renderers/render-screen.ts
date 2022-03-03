@@ -11,11 +11,12 @@ import {
 function renderText(
   canvas: HTMLCanvasElement,
   context: CanvasRenderingContext2D,
-  charXY: FontContext,
+  fontContext: FontContext,
   textContent: TextContent,
   scroller: Scroll,
   lineNumberContext: LineNumberContext,
-  themeProvider: ThemeProvider
+  themeProvider: ThemeProvider,
+  cursor: Cursor
 ) {
   // Store the current transformation matrix
   context.save();
@@ -31,13 +32,26 @@ function renderText(
   for (const [indexY, row] of textContent.entries()) {
     context.fillStyle = themeProvider.theme.text;
 
+    // Line highlight
+    if (cursor.Y === indexY) {
+      context.save();
+      context.fillStyle = themeProvider.theme.line;
+      context.fillRect(
+        0,
+        fontContext.height * indexY,
+        canvas.width,
+        fontContext.height + 4
+      );
+      context.restore();
+    }
+
+    // Line numbers
     context.save();
-    // line numbers
     context.fillStyle = themeProvider.theme.number;
     context.fillText(
       lineNumberContext.generateLineNumberText(indexY),
       0,
-      charXY.height * (indexY + 1)
+      fontContext.height * (indexY + 1)
     );
     context.restore();
 
@@ -63,10 +77,11 @@ function renderText(
           context.fillStyle = themeProvider.theme.text;
           break;
       }
+
       context.fillText(
         char,
-        lineNumberContext.offset + charXY.width * indexX,
-        charXY.height * (indexY + 1)
+        lineNumberContext.offset + fontContext.width * indexX,
+        fontContext.height * (indexY + 1)
       );
       context.restore();
     }
@@ -114,7 +129,8 @@ export default function renderScreen(
     textContent,
     scroller,
     lineNumberContext,
-    themeProvider
+    themeProvider,
+    cursor
   );
   renderCursor(
     canvas,
