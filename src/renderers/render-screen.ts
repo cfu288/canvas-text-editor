@@ -29,62 +29,68 @@ function renderText(
   context.fillStyle = themeProvider.theme.background;
   context.fillRect(0, Math.abs(scroller.Y), canvas.width, canvas.height);
 
+  const botBorder = canvas.getBoundingClientRect().height - scroller.Y;
   for (const [indexY, row] of textContent.entries()) {
-    context.fillStyle = themeProvider.theme.text;
+    const topBorder = fontContext.height * indexY + fontContext.height;
+    const lineYPos = fontContext.height * (indexY + 1);
+    // Only render if text will be seen on screen. Ignore off screen renders
+    if (topBorder >= Math.abs(scroller.Y) && botBorder > lineYPos) {
+      context.fillStyle = themeProvider.theme.text;
 
-    // Line highlight
-    if (cursor.Y === indexY) {
-      context.save();
-      context.fillStyle = themeProvider.theme.line;
-      context.globalAlpha = 0.4;
-      context.fillRect(
-        0,
-        fontContext.height * indexY,
-        canvas.width,
-        fontContext.height + fontContext.linePadding + fontContext.linePadding
-      );
-      context.restore();
-    }
-
-    // Line numbers
-    context.save();
-    context.fillStyle = themeProvider.theme.number;
-    context.fillText(
-      lineNumberContext.generateLineNumberText(indexY),
-      0,
-      fontContext.height * (indexY + 1)
-    );
-    context.restore();
-
-    for (const [indexX, char] of row.entries()) {
-      context.save();
-      switch (textContent.textHL[indexY][indexX]) {
-        case EditorHighlight.HL_NUMBER:
-          context.fillStyle = themeProvider.theme.number;
-          break;
-        case EditorHighlight.HL_STRING:
-          context.fillStyle = themeProvider.theme.string;
-          break;
-        case EditorHighlight.HL_COMMENT:
-          context.fillStyle = themeProvider.theme.comment;
-          break;
-        case EditorHighlight.HL_KEYWORD1:
-          context.fillStyle = themeProvider.theme.keyword;
-          break;
-        case EditorHighlight.HL_KEYWORD2:
-          context.fillStyle = themeProvider.theme.link;
-          break;
-        default:
-          context.fillStyle = themeProvider.theme.text;
-          break;
+      // Line highlight
+      if (cursor.Y === indexY) {
+        context.save();
+        context.fillStyle = themeProvider.theme.line;
+        context.globalAlpha = 0.4;
+        context.fillRect(
+          0,
+          fontContext.height * indexY,
+          canvas.width,
+          fontContext.height + fontContext.linePadding + fontContext.linePadding
+        );
+        context.restore();
       }
 
+      // Line numbers
+      context.save();
+      context.fillStyle = themeProvider.theme.number;
       context.fillText(
-        char,
-        lineNumberContext.offset + fontContext.width * indexX,
-        fontContext.height * (indexY + 1)
+        lineNumberContext.generateLineNumberText(indexY),
+        0,
+        lineYPos
       );
       context.restore();
+
+      for (const [indexX, char] of row.entries()) {
+        context.save();
+        switch (textContent.textHL[indexY][indexX]) {
+          case EditorHighlight.HL_NUMBER:
+            context.fillStyle = themeProvider.theme.number;
+            break;
+          case EditorHighlight.HL_STRING:
+            context.fillStyle = themeProvider.theme.string;
+            break;
+          case EditorHighlight.HL_COMMENT:
+            context.fillStyle = themeProvider.theme.comment;
+            break;
+          case EditorHighlight.HL_KEYWORD1:
+            context.fillStyle = themeProvider.theme.keyword;
+            break;
+          case EditorHighlight.HL_KEYWORD2:
+            context.fillStyle = themeProvider.theme.link;
+            break;
+          default:
+            context.fillStyle = themeProvider.theme.text;
+            break;
+        }
+
+        context.fillText(
+          char,
+          lineNumberContext.offset + fontContext.width * indexX,
+          lineYPos
+        );
+        context.restore();
+      }
     }
   }
 }
