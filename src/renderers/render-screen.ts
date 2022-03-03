@@ -36,11 +36,12 @@ function renderText(
     if (cursor.Y === indexY) {
       context.save();
       context.fillStyle = themeProvider.theme.line;
+      context.globalAlpha = 0.4;
       context.fillRect(
         0,
         fontContext.height * indexY,
         canvas.width,
-        fontContext.height + 4
+        fontContext.height + fontContext.linePadding + fontContext.linePadding
       );
       context.restore();
     }
@@ -99,12 +100,14 @@ function renderCursor(
   context.save();
   context.beginPath();
   context.moveTo(
-    lineNumberContext.offset + cursor.X * fontContext.width + 2,
+    lineNumberContext.offset + cursor.X * fontContext.width,
     cursor.Y * fontContext.height + 1
   );
   context.lineTo(
-    lineNumberContext.offset + cursor.X * fontContext.width + 2,
-    cursor.Y * fontContext.height + fontContext.height + 4
+    lineNumberContext.offset + cursor.X * fontContext.width,
+    cursor.Y * fontContext.height +
+      fontContext.height +
+      2 * fontContext.linePadding
   );
   context.lineWidth = 2;
   context.strokeStyle = themeProvider.theme.cursor;

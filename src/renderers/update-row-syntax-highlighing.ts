@@ -46,10 +46,6 @@ export const KEYWORDS = [
   "var",
 ].concat([...KEYWORDS1]);
 
-function isComment(r: TextRow<string>) {
-  return r.get(0) === "/" && r.get(1) === "/";
-}
-
 function isDigit(s: string) {
   return !isNaN(Number(s));
 }
@@ -106,8 +102,11 @@ export function updateRowSyntaxHighlighting(
       HLArr.splice(i, 1, EditorHighlight.HL_NUMBER);
     }
 
-    // handle comments
-    if (isComment(row)) {
+    // handle comments, only row ones for now
+    if (
+      (ch === "/" && row.get(i + 1) == "/") ||
+      (ch === "/" && row.get(i + 1) == "*")
+    ) {
       HLArr.length = row.length;
       HLArr.fill(EditorHighlight.HL_COMMENT);
       i = row.length;

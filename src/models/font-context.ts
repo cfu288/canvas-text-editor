@@ -29,6 +29,10 @@ export class FontContext {
     return this._fontSize + this._linePadding;
   }
 
+  get linePadding() {
+    return this._linePadding;
+  }
+
   get width() {
     return this._width;
   }
