@@ -8,6 +8,7 @@
     "watch": "parcel watch index.html",
     "build": "parcel build index.html --public-url 'https://cfu288.github.io/canvas-text-editor/'",
     "prepare": "husky install",
+    "benchmark": "ts-node --transpile-only src/models/benchmark.ts",
     "test": "jest"
   },
   "author": "",

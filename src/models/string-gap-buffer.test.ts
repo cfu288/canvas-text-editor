@@ -1,4 +1,4 @@
-import { StringGapBuffer } from "./gap-buffer";
+import { StringGapBuffer } from "./string-gap-buffer";
 
 // test("initializes", () => {
 //   const tgb = new StringGapBuffer([]);
@@ -107,126 +107,132 @@ test("insert item at index 2 ", () => {
   expect([...gb]).toEqual(["1", "2", "h", "3", "4"]);
 });
 
-// test("insert 10 items in middle", () => {
-//   const gb = new StringGapBuffer(["1", "2", "3", 4], 3);
-//   for (const [index, item] of [
-//     "1",
-//     "2",
-//     "3",
-//     "4",
-//     "5",
-//     "6",
-//     "7",
-//     "8",
-//     "9",
-//   ].entries()) {
-//     gb.insert(index + 2, item);
-//   }
-//   expect([...gb]).toEqual([
-//     1,
-//     2,
-//     "1",
-//     "2",
-//     "3",
-//     "4",
-//     "5",
-//     "6",
-//     "7",
-//     "8",
-//     "9",
-//     3,
-//     4,
-//   ]);
-// });
+test("insert 10 items in middle", () => {
+  const gb = new StringGapBuffer(["1", "2", "3", "4"], 3);
+  for (const [index, item] of [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+  ].entries()) {
+    gb.insert(index + 2, item);
+  }
+  expect([...gb]).toEqual([
+    "1",
+    "2",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "3",
+    "4",
+  ]);
+});
 
-// test.each([...Array(100).keys()])(
-//   "insert 100 items at front with variable buff sizes should always return same result",
-//   (buffSize) => {
-//     const arr = [...Array(100).keys()];
-//     const gb = new StringGapBuffer(arr, buffSize);
-//     const revArr = arr.reverse();
-//     for (const item of arr) {
-//       gb.insert(0, item);
-//     }
-//     expect(arr).toEqual(revArr);
-//   }
-// );
+test.each([...Array(100).keys()])(
+  "insert 100 items at front with variable buff sizes should always return same result",
+  (buffSize) => {
+    const arr = [...Array(100).keys()].map((x) => `${x}`);
+    const gb = new StringGapBuffer(arr, buffSize);
+    const revArr = arr.reverse();
+    for (const item of arr) {
+      gb.insert(0, item);
+    }
+    expect(arr).toEqual(revArr);
+  }
+);
 
-// test("getting a inserted value returns correct value", () => {
-//   const gb = new StringGapBuffer(["1", "2", "3", 4], 3);
-//   gb.insert(2, "hi");
-//   expect(gb.get(2)).toEqual("hi");
-// });
+test("getting a inserted value returns correct value", () => {
+  const gb = new StringGapBuffer(["1", "2", "3", "4"], 3);
+  gb.insert(2, "h");
+  expect(gb.get(2)).toEqual("h");
+});
 
-// test("getting a value before inserted value returns correct value", () => {
-//   const gb = new StringGapBuffer(["1", "2", "3", 4], 3);
-//   gb.insert(2, "hi");
-//   expect(gb.get(0)).toEqual(1);
-// });
+test("getting a value before inserted value returns correct value", () => {
+  const gb = new StringGapBuffer(["1", "2", "3", "4"], 3);
+  gb.insert(2, "h");
+  expect(gb.get(0)).toEqual("1");
+});
 
-// test("getting a value before inserted value returns correct value", () => {
-//   const gb = new StringGapBuffer(["1", "2", "3", 4], 3);
-//   gb.insert(2, "hi");
-//   expect(gb.get(1)).toEqual(2);
-// });
+test("getting a value before inserted value returns correct value", () => {
+  const gb = new StringGapBuffer(["1", "2", "3", "4"], 3);
+  gb.insert(2, "h");
+  expect(gb.get(1)).toEqual("2");
+});
 
-// test("getting a value after inserted value returns correct value", () => {
-//   const gb = new StringGapBuffer(["1", "2", "3", 4], 3);
-//   gb.insert(2, "hi");
-//   expect(gb.get(3)).toBe(3);
-// });
+test("getting a value after inserted value returns correct value", () => {
+  const gb = new StringGapBuffer(["1", "2", "3", "4"], 3);
+  gb.insert(2, "h");
+  expect(gb.get(3)).toBe("3");
+});
 
-// test("getting a value after inserted value returns correct value", () => {
-//   const gb = new StringGapBuffer(["1", "2", "3", 4], 3);
-//   gb.insert(2, "hi");
-//   expect(gb.get(4)).toBe(4);
-// });
+test("getting a value after inserted value returns correct value", () => {
+  const gb = new StringGapBuffer(["1", "2", "3", "4"], 3);
+  gb.insert(2, "h");
+  expect(gb.get(4)).toBe("4");
+});
 
-// test.each([...Array(100).keys()])(
-//   "getting any value returns correct value",
-//   (ix) => {
-//     const gb = new StringGapBuffer([...Array(100).keys()]);
-//     expect(gb.get(ix)).toBe(ix);
-//   }
-// );
+test.each([...Array(100).keys()])(
+  "getting any value returns correct value",
+  (ix) => {
+    const gb = new StringGapBuffer(
+      [...Array(100).keys()].map((x) => String.fromCharCode(x))
+    );
+    expect(gb.get(ix)).toBe(String.fromCharCode(ix));
+  }
+);
 
-// test.each([...Array(100).keys()])(
-//   "getting any value after insertion in front returns correct value",
-//   (ix) => {
-//     const gb = new StringGapBuffer([...Array(100).keys()]);
-//     gb.insert(0, "hi");
-//     expect(gb.get(ix + 1)).toBe(ix);
-//   }
-// );
+test.each([...Array(100).keys()])(
+  "getting any value after insertion in front returns correct value",
+  (ix) => {
+    const gb = new StringGapBuffer(
+      [...Array(100).keys()].map((x) => String.fromCharCode(x))
+    );
+    gb.insert(0, "h");
+    expect(gb.get(ix + 1)).toBe(String.fromCharCode(ix));
+  }
+);
 
-// test("insert in front then back works correctly", () => {
-//   const gb = new StringGapBuffer(["1", "2", "3", 4], 3);
+test("insert in front then back works correctly", () => {
+  const gb = new StringGapBuffer(["1", "2", "3", "4"], 3);
 
-//   gb.insert(0, "hi");
-//   gb.insert(5, "hi");
-//   gb.insert(0, "bye");
+  gb.insert(0, "q");
+  gb.insert(5, "w");
+  gb.insert(0, "e");
 
-//   expect(gb.get(1)).toBe("hi");
-//   expect(gb.get(6)).toBe("hi");
-//   expect(gb.get(0)).toBe("bye");
+  expect(gb.get(1)).toBe("q");
+  expect(gb.get(6)).toBe("w");
+  expect(gb.get(0)).toBe("e");
 
-//   expect([...gb]).toEqual(["bye", "hi", "1", "2", "3", 4, "hi"]);
-// });
+  expect([...gb]).toEqual(["e", "q", "1", "2", "3", "4", "w"]);
+});
 
-// test.each([...Array(20)])(
-//   "random inserts should result in identical values to an array with same inserts",
-//   () => {
-//     const gb = new StringGapBuffer([...Array(100).keys()]);
-//     const arr = [...Array(100).keys()];
+test.each([...Array(20)])(
+  "random inserts should result in identical values to an array with same inserts",
+  () => {
+    const gb = new StringGapBuffer(
+      [...Array(100).keys()].map((x) => String.fromCharCode(x))
+    );
+    const arr = [...Array(100).keys()].map((x) => String.fromCharCode(x));
 
-//     for (const x of [...Array(100).keys()]) {
-//       const rand = Math.floor(Math.random() * 100);
-//       gb.insert(rand, rand);
-//       arr.splice(rand, 0, rand);
-//     }
-//     expect([...gb]).toEqual(arr);
-//   }
-// );
+    for (const x of [...Array(100).keys()]) {
+      const rand = Math.floor(Math.random() * 100);
+      gb.insert(rand, String.fromCharCode(rand));
+      arr.splice(rand, 0, String.fromCharCode(rand));
+    }
+    expect([...gb]).toEqual(arr);
+  }
+);
 
 // test("insert in front then back works correctly", () => {
 //   const gb = new StringGapBuffer(["1", "2", "3", 4], 3);
@@ -316,27 +322,28 @@ test("insert item at index 2 ", () => {
 //   expect([...gb]).toEqual(["1", "2", "3"]);
 // });
 
-// test("slice returns correct slice", () => {
-//   const gb = new StringGapBuffer(["1", "2", "3", 4, 5], 3);
-//   expect(gb.slice(0, 2)).toEqual([1, 2]);
-// });
+test("slice returns correct slice", () => {
+  const gb = new StringGapBuffer(["1", "2", "3", "4", "5"], 3);
+  expect(gb.slice(0, 2)).toEqual(["1", "2"]);
+});
 
-// test("slice returns correct slice after pushes to front", () => {
-//   const gb = new StringGapBuffer(["1", "2", "3", 4, 5], 3);
-//   expect(gb.slice(0, 2)).toEqual([1, 2]);
-// });
+test("slice returns correct slice after pushes to front", () => {
+  const gb = new StringGapBuffer(["1", "2", "3", "4", "5"], 3);
+  expect(gb.slice(0, 2)).toEqual(["1", "2"]);
+});
 
-// test("slice returns correct slice after pushes to middle", () => {
-//   const gb = new StringGapBuffer([1, 2, 4, 5], 3);
-//   gb.insert(2, 0);
-//   expect(gb.slice(0, 4)).toEqual([1, 2, 0, 4]);
-// });
+test("slice returns correct slice after pushes to middle", () => {
+  const gb = new StringGapBuffer(["1", "2", "4", "5"], 3);
+  gb.insert(2, "0");
+  expect([...gb]).toEqual(["1", "2", "0", "4", "5"]);
+  expect(gb.slice(0, 4)).toEqual(["1", "2", "0", "4"]);
+});
 
-// test("slice returns correct slice after pushes to front", () => {
-//   const gb = new StringGapBuffer(["1", "2", "3", 4, 5], 3);
-//   gb.insert(0, 0);
-//   expect(gb.slice(0, 3)).toEqual([0, 1, 2]);
-// });
+test("slice returns correct slice after pushes to front", () => {
+  const gb = new StringGapBuffer(["1", "2", "3", "4", "5"], 3);
+  gb.insert(0, "0");
+  expect(gb.slice(0, 3)).toEqual(["0", "1", "2"]);
+});
 
 // test("slice returns correct slice after pushes to end", () => {
 //   const gb = new StringGapBuffer(["1", "2", "3", 4, 5], 3);
