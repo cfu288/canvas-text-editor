@@ -35,21 +35,23 @@ export class Scroll {
   // Todo: scroll speed leads to different results
   scrollDown(by = 200) {
     if (
-      Math.abs(this.cursorY) + this._canvas.getBoundingClientRect().height <
+      Math.abs(this.cursorY) +
+        this._canvas.getBoundingClientRect().height +
+        by <
       this._textContent.contentHeight
     ) {
       this.cursorY -= by;
       this._context.translate(0, 0 - by);
     } else if (
-      Math.abs(this.cursorY) + this._canvas.getBoundingClientRect().height >=
+      Math.abs(this.cursorY) + this._canvas.getBoundingClientRect().height <
       this._textContent.contentHeight
     ) {
-      // Do nothing
-    } else {
       const remainingHeight =
-        Math.abs(this.cursorY) +
-        this._canvas.getBoundingClientRect().height -
-        this._textContent.contentHeight;
+        this._textContent.contentHeight -
+        Math.abs(
+          Math.abs(this.cursorY) + this._canvas.getBoundingClientRect().height
+        );
+      console.log(remainingHeight);
       this.cursorY -= remainingHeight;
       this._context.translate(0, 0 - remainingHeight);
     }

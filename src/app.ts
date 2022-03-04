@@ -14,7 +14,7 @@ import { FileRegistry } from "./services";
 // Set up and inject dependencies
 export const { canvas, context } = initializeCanvas();
 export const themeProvider = new ThemeProvider();
-export const fontContext = new FontContext(context, "Courier New", 16, 4);
+export const fontContext = new FontContext(context, "Courier New", 14, 4);
 export const textContent = new TextContent(fontContext);
 export const lineNumberContext = new LineNumberContext(
   textContent,

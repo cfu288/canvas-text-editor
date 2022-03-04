@@ -1,5 +1,105 @@
+interface IArray<T> {
+  length: number;
+  concat: (g: Iterable<T>) => void;
+  delete: (ix: number) => void;
+  insert: (ix: number, value: T) => void;
+  get: (ix: number) => T;
+  slice: (ix: number, ix2: number) => Iterable<T>;
+  push: (val: T) => void;
+  pop: () => T;
+  entries: () => Generator<[number, T], void, unknown>;
+}
+
+export class StringGapBuffer {
+  private _dataBuffer: ArrayBuffer;
+  private data: Uint8Array;
+  private gapSize = 32;
+  private gapStart = 0;
+  private gapEnd = 32;
+
+  constructor(data: string[], gapSize = 32) {
+    const gap: string[] =
+      gapSize - data.length >= 0 ? Array(gapSize - data.length) : [];
+    const buff = data.concat(gap);
+    this._dataBuffer = new ArrayBuffer(buff.length);
+    this.data = new Uint8Array(this._dataBuffer);
+    for (let i = 0, strLen = buff.length; i < strLen; i++) {
+      this.data[i] = (buff[i] && buff[i].charCodeAt(0)) || NaN;
+    }
+    this.gapSize = gapSize;
+    this.gapEnd = gapSize > data.length ? gapSize : data.length;
+    this.gapStart = data.length || 0;
+  }
+
+  get length() {
+    return this.data.length - (this.gapEnd - this.gapStart);
+  }
+
+  insert(ix: number, value: string) {
+    if (this.gapStart === this.gapEnd) {
+      const nb = new ArrayBuffer(this.data.length + this.gapSize);
+      const nbv = new Uint8Array(nb);
+
+      for (let i = 0; i < ix; i++) {
+        nbv[i] = this.data[i];
+      }
+      for (let i = 0; i < this.gapSize; i++) {
+        nbv[ix + i] = NaN;
+      }
+      for (let i = 0; i < this.data.length - ix; i++) {
+        nbv[ix + this.gapSize + i] = this.data[ix + i];
+      }
+      this._dataBuffer = nb;
+      this.data = nbv;
+
+      this.gapStart = ix;
+      this.gapEnd = ix + this.gapSize;
+    } else {
+      this.moveGap(ix);
+    }
+    this.data[this.gapStart++] = value.charCodeAt(0);
+  }
+
+  /**
+   * @param ix index to move gap to
+   */
+  private moveGap(ix: number) {
+    if (ix < this.gapStart) {
+      const delta = this.gapStart - ix;
+
+      for (let i = delta - 1; i >= 0; i--) {
+        this.data[this.gapEnd - delta + i] = this.data[ix + i];
+      }
+      this.gapStart -= delta;
+      this.gapEnd -= delta;
+    } else {
+      const delta = ix - this.gapStart;
+      for (let i = 0; i < delta; ++i) {
+        this.data[this.gapStart + i] = this.data[this.gapEnd + i];
+      }
+      this.gapStart += delta;
+      this.gapEnd += delta;
+    }
+  }
+
+  /**
+   * Allow for GapBuffer to be iterable like an array
+   */
+  *[Symbol.iterator]() {
+    let ix = 0;
+    while (ix < this.data.length) {
+      if (ix < this.gapStart || ix >= this.gapEnd) {
+        yield String.fromCharCode(this.data[ix]);
+        ix += 1;
+      } else {
+        ix += 1;
+      }
+    }
+  }
+}
+
 // inspired by https://github.com/jaz303/gapbuffer
-export class GapBuffer<T> {
+export class GapBuffer<T> implements IArray<T> {
   private data: (T | undefined)[] = [];
   private gapSize = 32;
   private gapStart = 0;
@@ -7,7 +107,7 @@ export class GapBuffer<T> {
 
   constructor(data: (T | undefined)[], gapSize = 32) {
     const buff: (T | undefined)[] =
-      gapSize - data.length >= 0 ? Array(gapSize - data.length) : [];
+      gapSize - data.length >= 0 ? Array(gapSize - data.length).fill(" ") : [];
     this.data = data.concat(buff);
     this.gapSize = gapSize;
     this.gapEnd = gapSize > data.length ? gapSize : data.length; // points to first valid char of second buffer, if exists. otherwise, points off of array
@@ -18,7 +118,7 @@ export class GapBuffer<T> {
     return this.data.length - (this.gapEnd - this.gapStart);
   }
 
-  concat(g: GapBuffer<T>) {
+  concat(g: Iterable<T>) {
     for (const item of g) {
       this.push(item);
     }
@@ -34,7 +134,7 @@ export class GapBuffer<T> {
 
   insert(ix: number, value: T) {
     if (this.gapStart === this.gapEnd) {
-      this.data.splice(ix, 0, ...new Array(this.gapSize));
+      this.data.splice(ix, 0, ...new Array(this.gapSize).fill(" "));
       this.gapStart = ix;
       this.gapEnd = ix + this.gapSize;
     } else {
