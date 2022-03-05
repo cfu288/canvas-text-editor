@@ -1,4 +1,9 @@
-import { handleClick, handleKey, handleScroll } from "./handlers";
+import {
+  handleClick,
+  handleKey,
+  handleScroll,
+  handleToggleFileMenu,
+} from "./handlers";
 import { initializeCanvas } from "./initializers/initialize-canvas";
 import {
   Cursor,
@@ -65,12 +70,17 @@ document.getElementById("openFileButton").addEventListener("click", () => {
       requestRender();
     })
   );
+  handleToggleFileMenu();
 });
 document.getElementById("saveFileButton").addEventListener("click", () => {
   FileRegistry.saveFileContents(textContent.name, textContent).then(() => {
     alert(`${textContent.name} saved`);
   });
+  handleToggleFileMenu();
 });
+document
+  .getElementById("fileMenuButton")
+  .addEventListener("click", handleToggleFileMenu);
 
 // Initialize view by calling first render
 requestRender();
