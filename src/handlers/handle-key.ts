@@ -77,6 +77,14 @@ export function handleKey(e: KeyboardEvent) {
       }
       case "KeyV": {
         textContent.insertNewRowsAt(cursor.Y, textContent.buffer);
+        textContent.textHL[cursor.Y] = updateRowSyntaxHighlighting(
+          textContent.rowAt(cursor.Y)
+        );
+        textContent.textHL.splice(
+          cursor.Y,
+          0,
+          updateRowSyntaxHighlighting(textContent.rowAt(cursor.Y))
+        );
         // end of line
         cursor.setPosition([textContent.rowAt(cursor.Y).length, cursor.Y]);
         break;
