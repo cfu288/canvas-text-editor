@@ -26,6 +26,10 @@ export class Cursor {
     this.visible = !this.visible;
   }
 
+  setVisible(value: boolean) {
+    this.visible = value;
+  }
+
   setPosition([x, y]) {
     this.cursorX = x;
     this.cursorY = y;

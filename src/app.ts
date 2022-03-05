@@ -44,13 +44,8 @@ export function requestRender() {
   );
 }
 
-const toggleCursorInterval = setInterval(() => {
-  cursor.toggleVisible();
-  requestRender();
-}, 500);
-
 // Set up event handlers
-document.addEventListener("keydown", handleKey);
+canvas.addEventListener("keydown", handleKey);
 canvas.addEventListener("mousedown", (e) =>
   handleClick(
     e,
@@ -62,7 +57,7 @@ canvas.addEventListener("mousedown", (e) =>
     scroll
   )
 );
-window.addEventListener("wheel", handleScroll);
+canvas.addEventListener("wheel", handleScroll);
 window.addEventListener("resize", () => {
   initializeCanvas();
   fontContext.setFontStyle();
@@ -87,8 +82,20 @@ document
   .getElementById("fileMenuButton")
   .addEventListener("click", handleToggleFileMenu);
 
-// Initialize view by calling first render
-requestRender();
+const toggleCursorInterval = setInterval(() => {
+  if (document.activeElement === canvas) {
+    cursor.toggleVisible();
+  } else {
+    cursor.setVisible(false);
+  }
+  requestRender();
+}, 500);
+
+window.onload = () => {
+  // Initialize view by calling first render
+  canvas.focus();
+  requestRender();
+};
 
 // Clean up
 window.onbeforeunload = () => {
