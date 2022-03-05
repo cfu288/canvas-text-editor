@@ -93,4 +93,7 @@ const toggleCursorInterval = setInterval(() => {
 
 // Initialize view by calling first render
 canvas.focus();
+fontContext.selectFont("Fira Code").catch((e) => {
+  console.error(`Unable to load new font: ${e}`);
+});
 requestRender();

@@ -41,7 +41,34 @@ export class FontContext {
     return `${this._fontSize}px ${this._font}`;
   }
 
+  selectFont = async (font: string) => {
+    const f = FontOptions.filter((f) => f.name === font)?.[0];
+    if (f) {
+      if (!document.fonts.check(`${this._fontSize}px ${f.name}`)) {
+        const fontFile = new FontFace(f.name, `url(${f.url})`);
+        fontFile
+          .load()
+          .then((loadFont) => {
+            document.fonts.add(loadFont);
+            this._font = f.name;
+            this.setFontStyle();
+            return Promise.resolve(this.fontStyle);
+          })
+          .catch((e) => {
+            return Promise.reject(e);
+          });
+      }
+    } else {
+      return Promise.reject(new Error("Font not availible for this editor"));
+    }
+  };
+
   setFontStyle() {
     this.context.font = `${this._fontSize}px ${this._font}`;
   }
 }
+
+const FontOptions: { name: string; url: string | undefined } = [
+  { name: "Courier New", url: undefined },
+  { name: "Fira Code", url: "/static/fira-code-v17-latin-regular.woff2" },
+];
