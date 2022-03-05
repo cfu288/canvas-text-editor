@@ -82,7 +82,7 @@ document
   .getElementById("fileMenuButton")
   .addEventListener("click", handleToggleFileMenu);
 
-const toggleCursorInterval = setInterval(() => {
+setInterval(() => {
   if (document.activeElement === canvas) {
     cursor.toggleVisible();
   } else {

@@ -20,14 +20,8 @@ export class LineNumberContext {
   }
 
   generateLineNumberText(lineNumber: number) {
-    return (
-      " " +
-      (new Array(this.lineNumberWidth - lineNumber.toString().length - 2).join(
-        " "
-      ) +
-        lineNumber.toString() +
-        "|" +
-        " ")
-    );
+    return ` ${new Array(
+      this.lineNumberWidth - lineNumber.toString().length - 2
+    ).join(" ")}${lineNumber.toString()}| `;
   }
 }

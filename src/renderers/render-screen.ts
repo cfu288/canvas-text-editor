@@ -29,11 +29,17 @@ function renderText(
   context.fillStyle = themeProvider.theme.background;
   context.fillRect(0, Math.abs(scroller.Y), canvas.width, canvas.height);
 
-  const botBorder = canvas.getBoundingClientRect().height - scroller.Y;
+  // Calculate the Y value of the bottom border of the screen (rounding up one row height)
+  const botBorder =
+    canvas.getBoundingClientRect().height - scroller.Y + fontContext.height;
+  // For each text row in the document
   for (const [indexY, row] of textContent.entries()) {
-    const topBorder = fontContext.height * indexY + fontContext.height;
+    // Calculate the Y value of the top border of the screen (rounding up one row height)
+    const topBorder =
+      fontContext.height * indexY + fontContext.height + fontContext.height;
+    // Calculate Y location of current row
     const lineYPos = fontContext.height * (indexY + 1);
-    // Only render if text will be seen on screen. Ignore off screen renders
+    // Only render row if it will be seen on screen (between bottom border and top border)
     if (topBorder >= Math.abs(scroller.Y) && botBorder > lineYPos) {
       context.fillStyle = themeProvider.theme.text;
 
@@ -61,6 +67,7 @@ function renderText(
       );
       context.restore();
 
+      // Text chars syntax highlighting
       for (const [indexX, char] of row.entries()) {
         context.save();
         switch (textContent.textHL[indexY][indexX]) {
@@ -84,6 +91,7 @@ function renderText(
             break;
         }
 
+        // Actual text
         context.fillText(
           char,
           lineNumberContext.offset + fontContext.width * indexX,

@@ -23,7 +23,7 @@ export class StringGapBuffer {
     return this.data.length - (this.gapEnd - this.gapStart);
   }
 
-  slice(ix: number, ix2: number): Iterable<any> {
+  slice(ix: number, ix2: number) {
     if (ix >= this.gapStart && ix2 >= this.gapStart) {
       const a = [
         ...this.data.slice(
