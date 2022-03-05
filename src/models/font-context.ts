@@ -68,7 +68,10 @@ export class FontContext {
   }
 }
 
-const FontOptions: { name: string; url: string | undefined } = [
+const FontOptions: { name: string; url: string | undefined }[] = [
   { name: "Courier New", url: undefined },
-  { name: "Fira Code", url: "/fira-code-v17-latin-regular.woff2" },
+  {
+    name: "Fira Code",
+    url: "/canvas-text-editor/fira-code-v17-latin-regular.woff2",
+  },
 ];
