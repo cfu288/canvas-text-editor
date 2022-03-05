@@ -3,6 +3,7 @@ import { TextContent } from "./text-content";
 export class Cursor {
   private cursorX = 0;
   private cursorY = 0;
+  private visible = false;
   private textContent: TextContent;
 
   constructor(textArea: TextContent) {
@@ -15,6 +16,14 @@ export class Cursor {
 
   get Y(): number {
     return this.cursorY;
+  }
+
+  get isVisible(): boolean {
+    return this.visible;
+  }
+
+  toggleVisible() {
+    this.visible = !this.visible;
   }
 
   setPosition([x, y]) {

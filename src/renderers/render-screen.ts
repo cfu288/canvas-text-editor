@@ -103,22 +103,24 @@ function renderCursor(
   lineNumberContext: LineNumberContext,
   themeProvider: ThemeProvider
 ) {
-  context.save();
-  context.beginPath();
-  context.moveTo(
-    lineNumberContext.offset + cursor.X * fontContext.width,
-    cursor.Y * fontContext.height + 1
-  );
-  context.lineTo(
-    lineNumberContext.offset + cursor.X * fontContext.width,
-    cursor.Y * fontContext.height +
-      fontContext.height +
-      2 * fontContext.linePadding
-  );
-  context.lineWidth = 2;
-  context.strokeStyle = themeProvider.theme.cursor;
-  context.stroke();
-  context.restore();
+  if (cursor.isVisible) {
+    context.save();
+    context.beginPath();
+    context.moveTo(
+      lineNumberContext.offset + cursor.X * fontContext.width,
+      cursor.Y * fontContext.height + 1
+    );
+    context.lineTo(
+      lineNumberContext.offset + cursor.X * fontContext.width,
+      cursor.Y * fontContext.height +
+        fontContext.height +
+        2 * fontContext.linePadding
+    );
+    context.lineWidth = 2;
+    context.strokeStyle = themeProvider.theme.cursor;
+    context.stroke();
+    context.restore();
+  }
 }
 
 export default function renderScreen(

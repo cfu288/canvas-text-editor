@@ -44,6 +44,11 @@ export function requestRender() {
   );
 }
 
+const toggleCursorInterval = setInterval(() => {
+  cursor.toggleVisible();
+  requestRender();
+}, 500);
+
 // Set up event handlers
 document.addEventListener("keydown", handleKey);
 canvas.addEventListener("mousedown", (e) =>
@@ -84,3 +89,8 @@ document
 
 // Initialize view by calling first render
 requestRender();
+
+// Clean up
+window.onbeforeunload = () => {
+  clearInterval(toggleCursorInterval);
+};
