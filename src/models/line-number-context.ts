@@ -11,8 +11,8 @@ export class LineNumberContext {
   }
 
   get lineNumberWidth() {
-    // +1 is needed for the extra | char we add in
-    return this._textContext.lineNumberWidth + 1;
+    // +3 is needed for the extra | char we add in and 2 spaces
+    return this._textContext.lineNumberWidth + 3;
   }
 
   get offset() {
@@ -21,9 +21,13 @@ export class LineNumberContext {
 
   generateLineNumberText(lineNumber: number) {
     return (
-      new Array(this.lineNumberWidth - lineNumber.toString().length).join(" ") +
-      lineNumber.toString() +
-      "|"
+      " " +
+      (new Array(this.lineNumberWidth - lineNumber.toString().length - 2).join(
+        " "
+      ) +
+        lineNumber.toString() +
+        "|" +
+        " ")
     );
   }
 }
