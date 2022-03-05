@@ -91,13 +91,6 @@ const toggleCursorInterval = setInterval(() => {
   requestRender();
 }, 500);
 
-window.onload = () => {
-  // Initialize view by calling first render
-  canvas.focus();
-  requestRender();
-};
-
-// Clean up
-window.onbeforeunload = () => {
-  clearInterval(toggleCursorInterval);
-};
+// Initialize view by calling first render
+canvas.focus();
+requestRender();
