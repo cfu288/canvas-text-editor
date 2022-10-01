@@ -28,6 +28,15 @@ export const lineNumberContext = new LineNumberContext(
 export const cursor = new Cursor(textContent);
 export const scroll = new Scroll(canvas, context, textContent);
 
+fontContext
+  .selectFont("Fira Code")
+  .then(() => {
+    console.log("Font loaded");
+  })
+  .catch((e) => {
+    console.error(`Unable to load new font: ${e}`);
+  });
+
 // Connect render to dependencies
 export function requestRender() {
   window.requestAnimationFrame(() =>
@@ -63,6 +72,15 @@ window.addEventListener("resize", () => {
   fontContext.setFontStyle();
   requestRender();
 });
+
+// Nav menu button handlers
+document
+  .getElementById("fileMenuButton")
+  ?.addEventListener("click", () => handleToggleNavMenu("fileMenu"));
+document
+  .getElementById("preferencesMenuButton")
+  ?.addEventListener("click", () => handleToggleNavMenu("preferencesMenu"));
+
 document.getElementById("openFileButton")?.addEventListener("click", () => {
   FileRegistry.promptFileSelect().then((file) =>
     FileRegistry.getFileContents(file).then((data) => {
@@ -79,12 +97,20 @@ document.getElementById("saveFileButton")?.addEventListener("click", () => {
   handleToggleNavMenu("fileMenu");
 });
 document
-  .getElementById("fileMenuButton")
-  ?.addEventListener("click", () => handleToggleNavMenu("fileMenu"));
-document
-  .getElementById("preferencesMenuButton")
-  ?.addEventListener("click", () => handleToggleNavMenu("preferencesMenu"));
+  .getElementById("loadSampleFileButton")
+  ?.addEventListener("click", () => {
+    fetch(
+      "https://raw.githubusercontent.com/cfu288/canvas-text-editor/main/src/UTF8TextFile.txt"
+    ).then((res) => {
+      res.text().then((data) => {
+        textContent.readFromFile("UTF8TextFile.txt", data);
+      });
+    });
 
+    handleToggleNavMenu("fileMenu");
+  });
+
+// Font button handlers
 document
   .getElementById("font-item-courier-new")
   ?.addEventListener("click", () => {
@@ -93,12 +119,12 @@ document
       .then(() => {
         console.log("Font set");
         requestRender();
+        handleToggleNavMenu("preferencesMenu");
       })
       .catch((e) => {
         console.error(`Unable to load new font: ${e}`);
       });
   });
-
 document
   .getElementById("font-item-fira-code")
   ?.addEventListener("click", () => {
@@ -107,6 +133,7 @@ document
       .then(() => {
         console.log("Font set");
         requestRender();
+        handleToggleNavMenu("preferencesMenu");
       })
       .catch((e) => {
         console.error(`Unable to load new font: ${e}`);
@@ -122,12 +149,5 @@ setInterval(() => {
 
 // Initialize view by calling first render
 canvas.focus();
-fontContext
-  .selectFont("Fira Code")
-  .then(() => {
-    console.log("Font loaded");
-  })
-  .catch((e) => {
-    console.error(`Unable to load new font: ${e}`);
-  });
+
 requestRender();
