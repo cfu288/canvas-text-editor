@@ -32,7 +32,7 @@ export function setupNavBarHandlers() {
         "https://raw.githubusercontent.com/cfu288/canvas-text-editor/main/src/app.ts"
       ).then((res) => {
         res.text().then((data) => {
-          textContent.readFromFile("UTF8TextFile.txt", data);
+          textContent.readFromFile("app.ts", data);
         });
       });
 
