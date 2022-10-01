@@ -91,7 +91,8 @@ document
     fontContext
       .selectFont("Courier New")
       .then(() => {
-        console.log("font set");
+        console.log("Font set");
+        requestRender();
       })
       .catch((e) => {
         console.error(`Unable to load new font: ${e}`);
@@ -104,7 +105,8 @@ document
     fontContext
       .selectFont("Fira Code")
       .then(() => {
-        console.log("font set");
+        console.log("Font set");
+        requestRender();
       })
       .catch((e) => {
         console.error(`Unable to load new font: ${e}`);
@@ -120,7 +122,12 @@ setInterval(() => {
 
 // Initialize view by calling first render
 canvas.focus();
-fontContext.selectFont("Fira Code").catch((e) => {
-  console.error(`Unable to load new font: ${e}`);
-});
+fontContext
+  .selectFont("Fira Code")
+  .then(() => {
+    console.log("Font loaded");
+  })
+  .catch((e) => {
+    console.error(`Unable to load new font: ${e}`);
+  });
 requestRender();

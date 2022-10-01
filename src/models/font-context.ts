@@ -50,7 +50,7 @@ export class FontContext {
     if (f) {
       if (!document.fonts.check(`${this._fontSize}px ${f.name}`)) {
         const fontFile = new FontFace(f.name, `url(${f.url})`);
-        fontFile
+        return fontFile
           .load()
           .then((loadFont) => {
             document.fonts.add(loadFont);
@@ -62,6 +62,7 @@ export class FontContext {
             return Promise.reject(e);
           });
       }
+      return Promise.reject(new Error("Unable to load font"));
     } else {
       return Promise.reject(new Error("Font not available for this editor"));
     }
