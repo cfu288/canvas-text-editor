@@ -3,6 +3,7 @@ import {
   handleKey,
   handleScroll,
   handleToggleNavMenu,
+  setupNavBarHandlers,
 } from "./handlers";
 import { initializeCanvas } from "./initializers/initialize-canvas";
 import {
@@ -28,15 +29,6 @@ export const lineNumberContext = new LineNumberContext(
 export const cursor = new Cursor(textContent);
 export const scroll = new Scroll(canvas, context, textContent);
 
-fontContext
-  .selectFont("Fira Code")
-  .then(() => {
-    console.log("Font loaded");
-  })
-  .catch((e) => {
-    console.error(`Unable to load new font: ${e}`);
-  });
-
 // Connect render to dependencies
 export function requestRender() {
   window.requestAnimationFrame(() =>
@@ -52,6 +44,16 @@ export function requestRender() {
     )
   );
 }
+
+// Load default font
+fontContext
+  .selectFont("Fira Code")
+  .then(() => {
+    console.log("Font loaded");
+  })
+  .catch((e) => {
+    console.error(`Unable to load new font: ${e}`);
+  });
 
 // Set up event handlers
 canvas.addEventListener("keydown", handleKey);
@@ -73,73 +75,10 @@ window.addEventListener("resize", () => {
   requestRender();
 });
 
-// Nav menu button handlers
-document
-  .getElementById("fileMenuButton")
-  ?.addEventListener("click", () => handleToggleNavMenu("fileMenu"));
-document
-  .getElementById("preferencesMenuButton")
-  ?.addEventListener("click", () => handleToggleNavMenu("preferencesMenu"));
+// Set up nav menu button handlers
+setupNavBarHandlers();
 
-document.getElementById("openFileButton")?.addEventListener("click", () => {
-  FileRegistry.promptFileSelect().then((file) =>
-    FileRegistry.getFileContents(file).then((data) => {
-      textContent.readFromFile(file.name, data);
-      requestRender();
-    })
-  );
-  handleToggleNavMenu("fileMenu");
-});
-document.getElementById("saveFileButton")?.addEventListener("click", () => {
-  FileRegistry.saveFileContents(textContent.name, textContent).then(() => {
-    alert(`${textContent.name} saved`);
-  });
-  handleToggleNavMenu("fileMenu");
-});
-document
-  .getElementById("loadSampleFileButton")
-  ?.addEventListener("click", () => {
-    fetch(
-      "https://raw.githubusercontent.com/cfu288/canvas-text-editor/main/src/UTF8TextFile.txt"
-    ).then((res) => {
-      res.text().then((data) => {
-        textContent.readFromFile("UTF8TextFile.txt", data);
-      });
-    });
-
-    handleToggleNavMenu("fileMenu");
-  });
-
-// Font button handlers
-document
-  .getElementById("font-item-courier-new")
-  ?.addEventListener("click", () => {
-    fontContext
-      .selectFont("Courier New")
-      .then(() => {
-        console.log("Font set");
-        requestRender();
-        handleToggleNavMenu("preferencesMenu");
-      })
-      .catch((e) => {
-        console.error(`Unable to load new font: ${e}`);
-      });
-  });
-document
-  .getElementById("font-item-fira-code")
-  ?.addEventListener("click", () => {
-    fontContext
-      .selectFont("Fira Code")
-      .then(() => {
-        console.log("Font set");
-        requestRender();
-        handleToggleNavMenu("preferencesMenu");
-      })
-      .catch((e) => {
-        console.error(`Unable to load new font: ${e}`);
-      });
-  });
-
+// Set up blinking cursor
 setInterval(() => {
   if (document.activeElement === canvas) {
     cursor.toggleVisible();
@@ -149,5 +88,4 @@ setInterval(() => {
 
 // Initialize view by calling first render
 canvas.focus();
-
 requestRender();
