@@ -53,8 +53,8 @@ export class FontContext {
         const fontFile = new FontFace(f.name, `url(${f.url})`);
         return fontFile
           .load()
-          .then((loadFont) => {
-            document.fonts.add(loadFont);
+          .then((loadedFont) => {
+            document.fonts.add(loadedFont);
             this._font = f.name;
             this.setFontStyle();
             return Promise.resolve(this.fontStyle);
@@ -64,6 +64,7 @@ export class FontContext {
           });
       }
       // If font available
+      this._font = f.name;
       this.setFontStyle();
       return Promise.resolve(this.fontStyle);
     } else {
