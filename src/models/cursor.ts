@@ -30,7 +30,7 @@ export class Cursor {
     this.visible = value;
   }
 
-  setPosition([x, y]) {
+  setPosition([x, y]: [x: number, y: number]) {
     this.cursorX = x;
     this.cursorY = y;
   }

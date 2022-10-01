@@ -12,13 +12,13 @@ interface IArray<T> {
 
 // inspired by https://github.com/jaz303/gapbuffer
 export class GapBuffer<T> implements IArray<T> {
-  private data: (T | undefined)[] = [];
+  private data: T[] = [];
   private gapSize = 64;
   private gapStart = 0;
   private gapEnd = 64;
 
-  constructor(data: (T | undefined)[], gapSize = 64) {
-    const buff: (T | undefined)[] =
+  constructor(data: T[], gapSize = 64) {
+    const buff: T[] =
       gapSize - data.length >= 0 ? Array(gapSize - data.length).fill(" ") : [];
     this.data = data.concat(buff);
     this.gapSize = gapSize;

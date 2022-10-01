@@ -124,7 +124,7 @@ export function updateRowSyntaxHighlighting(
         const klen = kw.length;
         // get the next klen chars of the current row to see if it is a keyword
         const cw = row.slice(i, i + klen).join("");
-        if (cw === kw && row.get(i + klen) && isSeparator(row[i + klen])) {
+        if (cw === kw && row.get(i + klen) && isSeparator(row.get(i + klen))) {
           const secondary = KEYWORDS1SET.has(cw);
           // It is a keyword, mark it in the HL array
           for (let j = 0; j < klen; j++) {

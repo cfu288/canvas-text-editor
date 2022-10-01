@@ -20,7 +20,7 @@ export class TextRow<T> {
     return this._text.get(ix);
   }
 
-  slice(ix: number, ix2: number) {
+  slice(ix: number, ix2: number): T[] {
     return this._text.slice(ix, ix2);
   }
 

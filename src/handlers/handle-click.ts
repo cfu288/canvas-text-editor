@@ -12,8 +12,8 @@ export function getCharPositionFromCanvasPosition(
   fontContext: FontContext,
   lineNumberContext: LineNumberContext,
   scroll: Scroll,
-  clientWidth,
-  clientHeight
+  clientWidth: number,
+  clientHeight: number
 ): [x: number, y: number] {
   const rect = canvas.getBoundingClientRect();
   const x = Math.round(

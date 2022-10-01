@@ -1,3 +1,5 @@
+// @ts-nocheck
+// No need to check benchmarking file
 import { GapBuffer } from "./gap-buffer";
 import { StringGapBuffer } from "./string-gap-buffer";
 

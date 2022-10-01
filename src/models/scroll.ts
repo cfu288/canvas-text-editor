@@ -3,10 +3,14 @@ import { TextContent } from "./text-content";
 export class Scroll {
   private cursorX = 0;
   private cursorY = 0;
-  private _context = undefined;
-  private _canvas = undefined;
+  private _context: CanvasRenderingContext2D;
+  private _canvas: HTMLCanvasElement;
   private _textContent: TextContent;
-  constructor(canvas, context, textContent: TextContent) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
+    textContent: TextContent
+  ) {
     this._context = context;
     this._canvas = canvas;
     this._textContent = textContent;

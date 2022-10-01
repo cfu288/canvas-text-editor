@@ -135,7 +135,7 @@ export class TextContent {
     const stream = this.stream();
     let state = stream.next();
 
-    const peekGen: PeekableGenerator<string> = (function* () {
+    const gen = (function* () {
       while (!state.done) {
         const current = state.value;
         state = stream.next();
@@ -143,6 +143,7 @@ export class TextContent {
       }
       return state.value;
     })();
+    const peekGen = gen as PeekableGenerator<string>;
     peekGen.peek = () => state;
 
     return peekGen;
@@ -150,5 +151,5 @@ export class TextContent {
 }
 
 type PeekableGenerator<T> = Generator<T | void, void, unknown> & {
-  peek?: () => IteratorResult<T, void>;
+  peek: () => IteratorResult<T, void>;
 };

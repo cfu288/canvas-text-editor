@@ -39,7 +39,7 @@ test("insert 3 items at front", () => {
   gb.insert(0, "a");
   gb.insert(0, "b");
   gb.insert(0, "c");
-  expect([...gb]).toEqual(["c", "b", "a", 1, 2, 3], 3);
+  expect([...gb]).toEqual(["c", "b", "a", 1, 2, 3]);
 });
 
 test("insert 2 items at front", () => {
