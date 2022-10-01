@@ -2,7 +2,6 @@ import {
   handleClick,
   handleKey,
   handleScroll,
-  handleToggleNavMenu,
   setupNavBarHandlers,
 } from "./handlers";
 import { initializeCanvas } from "./initializers/initialize-canvas";
@@ -15,7 +14,6 @@ import {
   ThemeProvider,
 } from "./models";
 import renderScreen from "./renderers/render-screen";
-import { FileRegistry } from "./services";
 
 // Set up and inject dependencies
 export const { canvas, context } = initializeCanvas();
