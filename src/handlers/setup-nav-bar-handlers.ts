@@ -29,7 +29,7 @@ export function setupNavBarHandlers() {
     .getElementById("loadSampleFileButton")
     ?.addEventListener("click", () => {
       fetch(
-        "https://raw.githubusercontent.com/cfu288/canvas-text-editor/main/src/UTF8TextFile.txt"
+        "https://raw.githubusercontent.com/cfu288/canvas-text-editor/main/src/app.ts"
       ).then((res) => {
         res.text().then((data) => {
           textContent.readFromFile("UTF8TextFile.txt", data);
