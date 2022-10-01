@@ -2,7 +2,7 @@ import {
   handleClick,
   handleKey,
   handleScroll,
-  handleToggleFileMenu,
+  handleToggleNavMenu,
 } from "./handlers";
 import { initializeCanvas } from "./initializers/initialize-canvas";
 import {
@@ -63,30 +63,57 @@ window.addEventListener("resize", () => {
   fontContext.setFontStyle();
   requestRender();
 });
-document.getElementById("openFileButton").addEventListener("click", () => {
+document.getElementById("openFileButton")?.addEventListener("click", () => {
   FileRegistry.promptFileSelect().then((file) =>
     FileRegistry.getFileContents(file).then((data) => {
       textContent.readFromFile(file.name, data);
       requestRender();
     })
   );
-  handleToggleFileMenu();
+  handleToggleNavMenu("fileMenu");
 });
-document.getElementById("saveFileButton").addEventListener("click", () => {
+document.getElementById("saveFileButton")?.addEventListener("click", () => {
   FileRegistry.saveFileContents(textContent.name, textContent).then(() => {
     alert(`${textContent.name} saved`);
   });
-  handleToggleFileMenu();
+  handleToggleNavMenu("fileMenu");
 });
 document
   .getElementById("fileMenuButton")
-  .addEventListener("click", handleToggleFileMenu);
+  ?.addEventListener("click", () => handleToggleNavMenu("fileMenu"));
+document
+  .getElementById("preferencesMenuButton")
+  ?.addEventListener("click", () => handleToggleNavMenu("preferencesMenu"));
+
+document
+  .getElementById("font-item-courier-new")
+  ?.addEventListener("click", () => {
+    fontContext
+      .selectFont("Courier New")
+      .then(() => {
+        console.log("font set");
+      })
+      .catch((e) => {
+        console.error(`Unable to load new font: ${e}`);
+      });
+  });
+
+document
+  .getElementById("font-item-fira-code")
+  ?.addEventListener("click", () => {
+    fontContext
+      .selectFont("Fira Code")
+      .then(() => {
+        console.log("font set");
+      })
+      .catch((e) => {
+        console.error(`Unable to load new font: ${e}`);
+      });
+  });
 
 setInterval(() => {
   if (document.activeElement === canvas) {
     cursor.toggleVisible();
-  } else {
-    cursor.setVisible(false);
   }
   requestRender();
 }, 500);

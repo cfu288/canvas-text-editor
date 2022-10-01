@@ -5,6 +5,7 @@
     <link href="./index.css" rel="stylesheet" />
   </head>
   <body class="m-0 flex flex-col h-screen overflow-hidden">
+    <!-- Nav Bar -->
     <nav
       class="border-solid border-x-0 border-t-0 border-2 border-[#bd93f9]"
       style="background: #282a36"
@@ -13,14 +14,14 @@
         class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start"
       >
         <div class="relative flex">
-          <div>
+          <div class="relative">
             <button
               id="fileMenuButton"
               class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 text-sm font-medium"
             >
               File
             </button>
-            <div id="fileMenu" class="absolute top left m-0 hidden z-10">
+            <div id="fileMenu" class="menu absolute top left m-0 hidden z-10">
               <div class="shadow-lg border-solid border-2 border-[#bd93f9]">
                 <div class="relative grid" style="background: #282a36">
                   <button
@@ -78,10 +79,93 @@
               </div>
             </div>
           </div>
+
+          <div class="relative">
+            <button
+              id="preferencesMenuButton"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 text-sm font-medium"
+            >
+              Preferences
+            </button>
+            <div
+              id="preferencesMenu"
+              class="menu absolute top left m-0 hidden z-10"
+            >
+              <div class="shadow-lg border-solid border-2 border-[#bd93f9]">
+                <div class="relative grid" style="background: #282a36">
+                  <div class="relative inline-block text-left">
+                    <div>
+                      <button
+                        type="button"
+                        class="inline-flex w-full justify-centerpx-4 py-2 text-sm font-medium shadow-sm focus:outline-none text-gray-300 hover:bg-gray-700 hover:text-white px-3"
+                        style="background: #44475a"
+                        id="menu-button"
+                        aria-expanded="true"
+                        aria-haspopup="true"
+                      >
+                        Fonts
+                        <!-- Heroicon name: mini/chevron-down -->
+                        <svg
+                          class="-mr-1 ml-2 h-5 w-5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <!--
+                      Dropdown menu, show/hide based on menu state.
+                  
+                      Entering: "transition ease-out duration-100"
+                        From: "transform opacity-0 scale-95"
+                        To: "transform opacity-100 scale-100"
+                      Leaving: "transition ease-in duration-75"
+                        From: "transform opacity-100 scale-100"
+                        To: "transform opacity-0 scale-95"
+                    -->
+                    <div
+                      class="absolute left-0 z-10 mt-2 w-56 origin-top-right focus:outline-none bg-[#44475a]"
+                      role="menu"
+                      aria-orientation="vertical"
+                      aria-labelledby="menu-button"
+                      tabindex="-1"
+                    >
+                      <div class="py-1" role="none">
+                        <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                        <button
+                          class="text-gray-300 hover:text-white block px-4 py-2 text-sm w-full"
+                          role="menuitem"
+                          tabindex="-1"
+                          id="font-item-courier-new"
+                          >Courier New</button
+                        >
+                        <button
+                          class="text-gray-300 bg-gray-700 hover:text-white block px-4 py-2 text-sm w-full"
+                          role="menuitem"
+                          tabindex="-1"
+                          id="font-item-fira-code"
+                          >Fira Code</button
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
-    <div id="canvasContainer" class="flex-grow truncate active:outline-none" >
+    <!-- Text Editor -->
+    <div id="canvasContainer" class="flex-grow truncate active:outline-none">
       <canvas id="myCanvas" tabindex="1" class="focus:outline-none"></canvas>
     </div>
   </body>
