@@ -66,4 +66,17 @@ export function setupNavBarHandlers() {
           console.error(`Unable to load new font: ${e}`);
         });
     });
+  document
+    .getElementById("font-item-cascadia-code")
+    ?.addEventListener("click", () => {
+      fontContext
+        .selectFont("Cascadia Code")
+        .then(() => {
+          requestRender();
+          handleToggleNavMenu("preferencesMenu");
+        })
+        .catch((e) => {
+          console.error(`Unable to load new font: ${e}`);
+        });
+    });
 }

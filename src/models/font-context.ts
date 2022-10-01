@@ -7,12 +7,12 @@ export class FontContext {
   private _width: number;
   private _fontSize: number;
   private _linePadding: number;
-  private _font = "Courier New";
+  private _font: AvailableFonts = "Courier New";
   private context: CanvasRenderingContext2D;
 
   constructor(
     context: CanvasRenderingContext2D,
-    font: string,
+    font: AvailableFonts,
     fontSize: number,
     linePadding: number
   ) {
@@ -45,7 +45,7 @@ export class FontContext {
   }
 
   // Selects a font to use from a list of available fonts. If the font is not available on a users system, it is downloaded async and then set
-  selectFont = async (font: string) => {
+  selectFont = async (font: AvailableFonts) => {
     const f = FontOptions.filter((f) => f.name === font)?.[0];
     if (f) {
       // If font not available
@@ -78,10 +78,16 @@ export class FontContext {
   }
 }
 
-const FontOptions: { name: string; url: string | undefined }[] = [
+type AvailableFonts = "Courier New" | "Fira Code" | "Cascadia Code";
+
+const FontOptions: { name: AvailableFonts; url: string | undefined }[] = [
   { name: "Courier New", url: undefined },
   {
     name: "Fira Code",
     url: "/canvas-text-editor/fira-code-v17-latin-regular.woff2",
+  },
+  {
+    name: "Cascadia Code",
+    url: "/canvas-text-editor/CascadiaCode.woff2",
   },
 ];
