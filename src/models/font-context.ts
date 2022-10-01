@@ -48,6 +48,7 @@ export class FontContext {
   selectFont = async (font: string) => {
     const f = FontOptions.filter((f) => f.name === font)?.[0];
     if (f) {
+      // If font not available
       if (!document.fonts.check(`${this._fontSize}px ${f.name}`)) {
         const fontFile = new FontFace(f.name, `url(${f.url})`);
         return fontFile
@@ -62,7 +63,9 @@ export class FontContext {
             return Promise.reject(e);
           });
       }
-      return Promise.reject(new Error("Unable to load font"));
+      // If font available
+      this.setFontStyle();
+      return Promise.resolve(this.fontStyle);
     } else {
       return Promise.reject(new Error("Font not available for this editor"));
     }
