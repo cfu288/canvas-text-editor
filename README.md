@@ -2,6 +2,8 @@
 
 A proof-of-concept text editor implemented using HTML canvas. This is an extremely rough prototype, don't use for anything serious as it is missing features like accessibility.
 
+Inspired by [this article](https://viewsourcecode.org/snaptoken/kilo/)
+
 [Demo](https://cfu288.github.io/canvas-text-editor/)
 
 ![screenshot](./example.png)
